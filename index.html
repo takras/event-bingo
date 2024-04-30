@@ -41,24 +41,36 @@
       /* Style content with shaded background */
       .content {
         width: 100%;
-        /* Adjust the width as needed */
         height: 100%;
-        /* Adjust the height as needed*/
         box-sizing: border-box;
         font-family: Arial, sans-serif;
-        /* background-color: #f0f0f0; */
-        /* Light gray shade */
+      }
+
+      .name {
+        font-size: xx-large;
+        padding-top: 20px;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: flex-start;
+        width: 60%;
+        border-bottom: 1px solid black;
       }
 
       .logo {
-        width: 50%;
+        max-width: 50%;
+        max-height: 100px;
         margin-left: auto;
         margin-right: auto;
       }
 
       .rules {
         padding: 20px;
-        font-size: larger;
+      }
+
+      .rules p {
+        padding-bottom: 15px;
       }
 
       .board {
@@ -70,30 +82,27 @@
       .icon {
         width: 20px;
         height: 20px;
+        vertical-align: bottom;
       }
       .row {
         display: flex;
         flex-direction: row;
         justify-content: center;
       }
-      .column {
-        background-color: black;
-        padding: 5px;
-      }
       .cell {
+        border: 3px solid black;
         background-color: aliceblue;
-        width: 130px;
-        height: 130px;
+        width: 140px;
+        height: 140px;
         padding: 5px;
       }
       .empty {
-        background-color: black;
         border-radius: 5px;
         position: relative;
       }
       .empty:after {
         position: absolute;
-        top: 18px;
+        margin-top: 18px;
         bottom: 0;
         left: 0;
         right: 0;
@@ -124,8 +133,23 @@
         },
       ];
       const input = {
-        minimumPerCategory: 5,
-        categories: ["game", "task", "social"],
+        defaultMinimumPerCategory: 5,
+        categories: [
+          { name: "game" },
+          { name: "task" },
+          { name: "social" },
+          { name: "merch" },
+        ],
+        rules: [
+          `Velkommen til GrimCon-bingo! Her skal du prøve å oppnå Bingo ved å
+                fullføre forskjellige oppgaver og prøve å få fem-på-rad. Vertikalt, horisontalt og
+                diagonalt er alle gyldige, og midten er allerede krysset av!`,
+          `Første person som har fem på rad og roper Bingo! til resepsjonen får en premie.`,
+          `Det er fortsatt mulighet å vinne! Hvis du får til hele to linjer kan du også rope Bingo!
+                Igjen er det førstemann til mølla!`,
+          `Tusen takk til Marthe fra Sola brettspillklubb som lot oss få bruke ideen hennes til
+                Grimcon 2024!`,
+        ],
         entries: [
           {
             id: 0,
@@ -155,7 +179,8 @@
 
           {
             id: 4,
-            description: "Spill med minst 10 forskjellige mennesker.",
+            description:
+              "Spill med minst 10 forskjellige mennesker i løpet av GrimCon.",
             category: "game",
           },
 
@@ -226,7 +251,7 @@
           {
             id: 16,
             description:
-              "Ta et artig bilde og post på Instagram med hashtag #grimcon.",
+              "Ta et artig bilde og post på GrimCons Facebook-gruppe.",
             category: "social",
           },
 
@@ -259,8 +284,9 @@
           },
           {
             id: 22,
-            description: "Ta en selfie med en ",
-            category: "task",
+            description:
+              "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+            category: "social",
             icon: "guide",
           },
           {
@@ -271,9 +297,31 @@
           },
           {
             id: 24,
-            description: "Ta en selfie med en ",
-            category: "task",
+            description:
+              "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+            category: "social",
             icon: "idea",
+          },
+          {
+            id: 25,
+            description: "Spill et spill stående.",
+            category: "task",
+          },
+          {
+            id: 26,
+            description:
+              "Stable spillbrikkene dine og del bildet i GrimCon-gruppa på Facebook.",
+            category: "social",
+          },
+          {
+            id: 27,
+            description: "Spill et spill som ikke har terninger.",
+            category: "game",
+          },
+          {
+            id: 28,
+            description: "Sjekk ut hva Grimfield Games har til salgs.",
+            category: "merch",
           },
         ],
       };
@@ -284,7 +332,7 @@
       function fillBoardState() {
         input.categories.forEach((category) => {
           const filteredEntries = input.entries.filter(
-            (entry) => entry.category === category
+            (entry) => entry.category === category.name
           );
           getRandomEntriesFromList(filteredEntries);
         });
@@ -300,34 +348,38 @@
 
       function getRandomEntriesFromList(entries, fill) {
         const MINIMUM_CATEGORY_PICKS = Math.min(
-          input.minimumPerCategory,
+          input.defaultMinimumPerCategory,
           entries.length
         );
         const MAXIMUM_PICKS = 24;
         const MINIUM_SELECTION = fill
           ? MAXIMUM_PICKS - pickedEntries.length
           : 5;
+
         const MIN = 0;
         const MAX = entries.length;
-        let idFound = false;
         let count = 0;
         let entry = -1;
         const filteredPicks = [];
-        while (filteredPicks.length < MINIUM_SELECTION) {
+        while (filteredPicks.length < MINIUM_SELECTION && count < 5000) {
           const id = Math.floor(Math.random() * (MAX - MIN)) + MIN;
           entry = entries[id];
           count = count + 1;
 
+          if (!entry) {
+            continue;
+          }
+
           if (!filteredPicks.includes(entry.id)) {
             filteredPicks.push(entry.id);
             pickedEntries.push(entry.id);
+            continue;
           }
           if (count > 5000) {
             console.log("AAAAH!");
             break;
           }
         }
-        return entry.id;
       }
 
       function Cell({ index }) {
@@ -358,6 +410,7 @@
           <div className="content">
             <div className="board">
               <img className="logo" src="grimcon2024.jpeg" />
+              <div className="name">Navn:</div>
               {rows.map((r) => (
                 <div className="row" key={r}>
                   {columns.map((c) => {
@@ -374,22 +427,11 @@
                 </div>
               ))}
               <div className="rules">
-                Velkommen til GrimCon-bingo! For en ekstra liten overraskelse
-                kan vi bla-bla bla og foo bar lorem ipsum. Tusen takk til Marthe
-                fra Sola brettspillklubb som lot oss få bruke ideen hennes til
-                Grimcon 2024!
+                {input.rules.map((rule) => (
+                  <p>{rule}</p>
+                ))}
               </div>
             </div>
-          </div>
-        );
-      }
-
-      function BingoMeta() {
-        console.log(input);
-        return (
-          <div>
-            <Icons />
-            <Tasks />
           </div>
         );
       }
@@ -412,34 +454,9 @@
         ));
       }
 
-      function Tasks() {
-        console.log(input.entries);
-        return input.entries.map((entry) => {
-          return (
-            <div key={entry.category + Math.random()}>
-              <strong>{entry.category}</strong>
-              <div>
-                {entry.description}
-                {entry.icon && getIcon(entry.icon)}
-              </div>
-            </div>
-          );
-        });
-      }
-
       const container = document.getElementById("root");
       const root = ReactDOM.createRoot(container);
       root.render(<Board />);
     </script>
-    <!--
-      Note: this page is a great way to try React but it's not suitable for production.
-      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
-
-      Read this page for starting a new React project with JSX:
-      https://react.dev/learn/start-a-new-react-project
-
-      Read this page for adding React with JSX to an existing project:
-      https://react.dev/learn/add-react-to-an-existing-project
-    -->
   </body>
 </html>
