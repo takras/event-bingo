@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grimcon Bingo</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <style>
+      /* Set A4 size */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      /* Set content to fill the entire A4 page */
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Style content with shaded background */
+      .content {
+        width: 100%;
+        /* Adjust the width as needed */
+        height: 100%;
+        /* Adjust the height as needed*/
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        /* background-color: #f0f0f0; */
+        /* Light gray shade */
+      }
+
+      .logo {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .rules {
+        padding: 20px;
+        font-size: larger;
+      }
+
+      .board {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .column {
+        background-color: black;
+        padding: 5px;
+      }
+      .cell {
+        background-color: aliceblue;
+        width: 130px;
+        height: 130px;
+        padding: 5px;
+      }
+      .empty {
+        background-color: black;
+        border-radius: 5px;
+        position: relative;
+      }
+      .empty:after {
+        position: absolute;
+        top: 18px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        content: "\274c";
+        font-size: 120px;
+        color: #fff;
+        line-height: 100px;
+        text-align: center;
+      }
+    </style>
+    <script type="text/babel">
+      const icons = [
+        {
+          name: "idea",
+          image: "ideskaper.png",
+        },
+        {
+          name: "fire",
+          image: "ildsjel.png",
+        },
+        {
+          name: "merchant",
+          image: "kremmer.png",
+        },
+        {
+          name: "guide",
+          image: "veiviser.png",
+        },
+      ];
+      const input = {
+        minimumPerCategory: 5,
+        categories: ["game", "task", "social"],
+        entries: [
+          {
+            id: 0,
+            description: "Vinn i et spill med minst 4 spillere.",
+            category: "game",
+          },
+
+          {
+            id: 1,
+            description:
+              "Trill en terning så dårlig at den faller i gulvet, og få noen andre til å plukke den opp for deg.",
+            category: "task",
+          },
+
+          {
+            id: 2,
+            description:
+              "Spill et spill som starter med samme forbokstav som deg.",
+            category: "game",
+          },
+
+          {
+            id: 3,
+            description: "Ta en selfie med Stian eller Steinar.",
+            category: "social",
+          },
+
+          {
+            id: 4,
+            description: "Spill med minst 10 forskjellige mennesker.",
+            category: "game",
+          },
+
+          {
+            id: 5,
+            description: "Spill 5 nye (for deg) spill.",
+            category: "game",
+          },
+
+          { id: 6, description: "Spill et spill fra 2024.", category: "game" },
+
+          {
+            id: 7,
+            description: "Spill et spill som kom ut før år 2000.",
+            category: "game",
+          },
+
+          {
+            id: 8,
+            description:
+              "Spill et spill med noen som er på GrimCon for første gang.",
+            category: "social",
+          },
+
+          {
+            id: 9,
+            description: "Spill et spill med bare ukjente mennesker.",
+            category: "social",
+          },
+
+          {
+            id: 10,
+            description: "Spill et spill under bordet.",
+            category: "task",
+          },
+
+          {
+            id: 11,
+            description: "Spill et spill kun for 2 spillere.",
+            category: "game",
+          },
+
+          {
+            id: 12,
+            description:
+              "Stå på en stol og annonser til alle (minst 15) at GrimCon er supert.",
+            category: "task",
+          },
+
+          {
+            id: 13,
+            description: "Spill et spill med dyr som tema.",
+            category: "game",
+          },
+
+          {
+            id: 14,
+            description: "Spill et spill med verdensrom-tema.",
+            category: "game",
+          },
+
+          {
+            id: 15,
+            description: "Spill et spill til frokost.",
+            category: "game",
+          },
+
+          {
+            id: 16,
+            description:
+              "Ta et artig bilde og post på Instagram med hashtag #grimcon.",
+            category: "social",
+          },
+
+          {
+            id: 17,
+            description: "Ta en seiersdans etter å ha vunnet i et spill.",
+            category: "task",
+          },
+
+          {
+            id: 18,
+            description: "Tøm et fullt glass på 30 sekund ved å drikke det.",
+            category: "task",
+          },
+          {
+            id: 19,
+            description: "Rydd et bord for kopper og søppel.",
+            category: "task",
+          },
+          {
+            id: 20,
+            description: "Finn opp en regel og få noen til å sjekke reglene.",
+            category: "task",
+          },
+          {
+            id: 21,
+            description: "Gi klem til en ",
+            category: "social",
+            icon: "fire",
+          },
+          {
+            id: 22,
+            description: "Ta en selfie med en ",
+            category: "task",
+            icon: "guide",
+          },
+          {
+            id: 23,
+            description: "Ta en high-five med en ",
+            category: "social",
+            icon: "merchant",
+          },
+          {
+            id: 24,
+            description: "Ta en selfie med en ",
+            category: "task",
+            icon: "idea",
+          },
+        ],
+      };
+
+      const filledBoard = [];
+      const pickedEntries = [];
+
+      function fillBoardState() {
+        input.categories.forEach((category) => {
+          const filteredEntries = input.entries.filter(
+            (entry) => entry.category === category
+          );
+          getRandomEntriesFromList(filteredEntries);
+        });
+
+        const remainingEntries = input.entries.filter(
+          (entry) => !pickedEntries.includes(entry.id)
+        );
+        getRandomEntriesFromList(remainingEntries, true);
+        filledBoard.push(...shuffleArray(pickedEntries));
+      }
+
+      fillBoardState();
+
+      function getRandomEntriesFromList(entries, fill) {
+        const MINIMUM_CATEGORY_PICKS = Math.min(
+          input.minimumPerCategory,
+          entries.length
+        );
+        const MAXIMUM_PICKS = 24;
+        const MINIUM_SELECTION = fill
+          ? MAXIMUM_PICKS - pickedEntries.length
+          : 5;
+        const MIN = 0;
+        const MAX = entries.length;
+        let idFound = false;
+        let count = 0;
+        let entry = -1;
+        const filteredPicks = [];
+        while (filteredPicks.length < MINIUM_SELECTION) {
+          const id = Math.floor(Math.random() * (MAX - MIN)) + MIN;
+          entry = entries[id];
+          count = count + 1;
+
+          if (!filteredPicks.includes(entry.id)) {
+            filteredPicks.push(entry.id);
+            pickedEntries.push(entry.id);
+          }
+          if (count > 5000) {
+            console.log("AAAAH!");
+            break;
+          }
+        }
+        return entry.id;
+      }
+
+      function Cell({ index }) {
+        const id = filledBoard[index];
+        const entry = input.entries.find((e, i) => i === id);
+        return (
+          <div className="cell">
+            {entry.description}
+            {entry.icon && getIcon(entry.icon)}
+          </div>
+        );
+      }
+
+      function shuffleArray(list) {
+        return list.sort(() => Math.random() - 0.5);
+      }
+
+      function EmptyCell() {
+        return <div className="cell empty"></div>;
+      }
+
+      function Board() {
+        const columns = [0, 1, 2, 3, 4];
+        const rows = [0, 1, 2, 3, 4];
+        let cellCount = 0;
+        const CENTER = 2;
+        return (
+          <div className="content">
+            <div className="board">
+              <img className="logo" src="grimcon2024.jpeg" />
+              {rows.map((r) => (
+                <div className="row" key={r}>
+                  {columns.map((c) => {
+                    return (
+                      <div className="column" key={c}>
+                        {c === CENTER && r === CENTER ? (
+                          <EmptyCell />
+                        ) : (
+                          <Cell index={cellCount++} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+              <div className="rules">
+                Velkommen til GrimCon-bingo! For en ekstra liten overraskelse
+                kan vi bla-bla bla og foo bar lorem ipsum. Tusen takk til Marthe
+                fra Sola brettspillklubb som lot oss få bruke ideen hennes til
+                Grimcon 2024!
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function BingoMeta() {
+        console.log(input);
+        return (
+          <div>
+            <Icons />
+            <Tasks />
+          </div>
+        );
+      }
+
+      function getIcon(name) {
+        return (
+          <img
+            className={"icon"}
+            src={icons.find((icon) => icon.name === name).image}
+          />
+        );
+      }
+
+      function Icons() {
+        return icons.map((icon) => (
+          <div key={Math.random()}>
+            <strong>{icon.name}</strong>
+            <div>{getIcon(icon.name)} </div>
+          </div>
+        ));
+      }
+
+      function Tasks() {
+        console.log(input.entries);
+        return input.entries.map((entry) => {
+          return (
+            <div key={entry.category + Math.random()}>
+              <strong>{entry.category}</strong>
+              <div>
+                {entry.description}
+                {entry.icon && getIcon(entry.icon)}
+              </div>
+            </div>
+          );
+        });
+      }
+
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<Board />);
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this page for starting a new React project with JSX:
+      https://react.dev/learn/start-a-new-react-project
+
+      Read this page for adding React with JSX to an existing project:
+      https://react.dev/learn/add-react-to-an-existing-project
+    -->
+  </body>
+</html>
