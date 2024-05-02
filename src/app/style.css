@@ -101,18 +101,10 @@ body {
   padding: 5px;
 }
 .empty {
-  border-radius: 5px;
   position: relative;
-}
-.empty:after {
-  position: absolute;
-  margin-top: 18px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  content: "\274c";
-  font-size: 120px;
-  color: #fff;
-  line-height: 100px;
-  text-align: center;
+  padding: 0;
+  img {
+    box-sizing: border-box;
+    width: 130px;
+  }
 }

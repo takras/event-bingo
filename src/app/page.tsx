@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import styles from "./page.module.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Entry, InputFile } from "@/types";
-import Image from "next/image";
 import grimcon from "@/data/grimcon2024.json";
+
+const basePath = "/event-bingo";
 
 type EntryWithId = Entry & { id: number };
 
@@ -71,7 +73,11 @@ function getIcon(name: string) {
     return null;
   }
   return (
-    <Image alt={icon.name} className={"icon"} src={`/images/${icon.image}`} />
+    <img
+      alt={icon.name}
+      className={"icon"}
+      src={`${basePath}/images/${icon.image}`}
+    />
   );
 }
 
@@ -92,21 +98,21 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
         {(input.logo || input.supplementImage) && (
           <div className="header">
             {input.logo && (
-              <Image
+              <img
                 width={256}
                 height={142}
                 alt={"Logo"}
                 className="logo"
-                src={`/images/${input.logo}`}
+                src={`${basePath}/images/${input.logo}`}
               />
             )}
             {input.supplementImage && (
-              <Image
+              <img
                 width={140}
                 height={140}
                 alt="QR Code"
                 className="supplement"
-                src={`/images/${input.supplementImage}`}
+                src={`${basePath}/images/${input.supplementImage}`}
               />
             )}
           </div>
@@ -119,7 +125,9 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
                 return (
                   <div className="column" key={`${c}${r}`}>
                     {c === CENTER && r === CENTER ? (
-                      <div className="cell empty"></div>
+                      <div className="cell empty">
+                        <img alt="X" src={`${basePath}/images/x.png`}></img>
+                      </div>
                     ) : (
                       <Cell
                         index={cellCount++}
