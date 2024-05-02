@@ -75,155 +75,177 @@ function getIcon(name: string) {
   );
 }
 
+type Board = {
+  entries: EntryWithId[];
+  entriesOrder: number[];
+  input: InputFile;
+};
+const Board = ({ entries, input, entriesOrder }: Board) => {
+  const columns = [0, 1, 2, 3, 4];
+  const rows = [0, 1, 2, 3, 4];
+  let cellCount = 0;
+  const CENTER = 2;
+
+  return (
+    <div className="content">
+      <div className="board">
+        {(input.logo || input.supplementImage) && (
+          <div className="header">
+            {input.logo && (
+              <Image
+                width={256}
+                height={142}
+                alt={"Logo"}
+                className="logo"
+                src={`/images/${input.logo}`}
+              />
+            )}
+            {input.supplementImage && (
+              <Image
+                width={140}
+                height={140}
+                alt="QR Code"
+                className="supplement"
+                src={`/images/${input.supplementImage}`}
+              />
+            )}
+          </div>
+        )}
+        <div className="name">Navn:</div>
+        {entries &&
+          rows.map((r) => (
+            <div className="row" key={r}>
+              {columns.map((c) => {
+                return (
+                  <div className="column" key={`${c}${r}`}>
+                    {c === CENTER && r === CENTER ? (
+                      <div className="cell empty"></div>
+                    ) : (
+                      <Cell
+                        index={cellCount++}
+                        boardState={entriesOrder}
+                        entries={entries}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        <div className="rules">
+          {input.rules.map((rule, i) => (
+            <p key={"rule" + i}>{rule}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type GetRandomEntries = {
+  entriesToPickFrom: EntryWithId[];
+  maximumPicks?: number;
+};
+const getRandomEntriesFromList = ({
+  entriesToPickFrom,
+  maximumPicks,
+}: GetRandomEntries) => {
+  const MAXIMUM_PICKS = 24;
+  const MINIUM_SELECTION = maximumPicks
+    ? MAXIMUM_PICKS - entriesToPickFrom.length
+    : 5;
+
+  const MIN = 0;
+  const MAX = entriesToPickFrom.length;
+  let count = 0;
+  let entryId = -1;
+  const filteredPicks: number[] = [];
+  while (filteredPicks.length < MINIUM_SELECTION && count < 5000) {
+    const id = Math.floor(Math.random() * (MAX - MIN)) + MIN;
+    entryId = entriesToPickFrom[id].id;
+    count = count + 1;
+
+    if (!entryId) {
+      continue;
+    }
+
+    if (!filteredPicks.includes(entryId)) {
+      filteredPicks.push(entryId);
+      continue;
+    }
+    if (count > 5000) {
+      console.log("AAAAH!");
+      break;
+    }
+  }
+  return filteredPicks;
+};
+
 export default function Home() {
-  const inputFile = grimcon as InputFile;
+  const [input, setInput] = useState<InputFile>(grimcon as InputFile);
+  const [filteredEntries, setFilteredEntries] = useState<number[]>([]);
   const [entries, setEntries] = useState<EntryWithId[]>();
   const [showTasks, setShowTasks] = useState(false);
 
-  const filledBoard: number[] = [];
-  const pickedEntries: number[] = [];
+  useEffect(() => {
+    setEntries(input.entries.map((entry, id) => ({ ...entry, id })));
+  }, [input]);
 
   useEffect(() => {
-    setEntries(inputFile.entries.map((entry, id) => ({ ...entry, id })));
-  }, [inputFile]);
-
-  function fillBoardState() {
     if (!entries) {
       return;
     }
-    inputFile.categories.forEach((category) => {
-      const filteredEntries = entries.filter(
-        (entry) => entry.category === category.name
-      );
-      getRandomEntriesFromList(filteredEntries);
+
+    const pickedEntries: number[] = [];
+
+    input.categories.forEach((category) => {
+      const list = entries.filter((entry) => entry.category === category.name);
+      const randomList = getRandomEntriesFromList({
+        entriesToPickFrom: list,
+        maximumPicks: input.defaultMinimumPerCategory,
+      });
+      pickedEntries.push(...randomList);
+      setFilteredEntries((current) => [...current, ...randomList]);
     });
 
     const remainingEntries = entries.filter(
       (entry) => !pickedEntries.includes(entry.id)
     );
-    getRandomEntriesFromList(remainingEntries, true);
-    filledBoard.push(...shuffleArray(pickedEntries));
-  }
+    const remaining = getRandomEntriesFromList({
+      entriesToPickFrom: remainingEntries,
+    });
+    setFilteredEntries((current) => [...current, ...remaining]);
+  }, [entries, input.categories, input.defaultMinimumPerCategory]);
 
-  fillBoardState();
-
-  function getRandomEntriesFromList(entries: EntryWithId[], fill = false) {
-    const MAXIMUM_PICKS = 24;
-    const MINIUM_SELECTION = fill ? MAXIMUM_PICKS - pickedEntries.length : 5;
-
-    const MIN = 0;
-    const MAX = entries.length;
-    let count = 0;
-    let entryId = -1;
-    const filteredPicks: number[] = [];
-    while (filteredPicks.length < MINIUM_SELECTION && count < 5000) {
-      const id = Math.floor(Math.random() * (MAX - MIN)) + MIN;
-      entryId = entries[id].id;
-      count = count + 1;
-
-      if (!entryId) {
-        continue;
-      }
-
-      if (!filteredPicks.includes(entryId)) {
-        filteredPicks.push(entryId);
-        pickedEntries.push(entryId);
-        continue;
-      }
-      if (count > 5000) {
-        console.log("AAAAH!");
-        break;
-      }
-    }
-  }
+  useEffect(() => {}, [entries]);
 
   function shuffleArray(list: number[]) {
     return list.sort(() => Math.random() - 0.5);
   }
 
   function randomizeBoard() {
-    console.log(entries);
+    setEntries((entries) => [...(entries || [])]);
   }
 
-  function Board() {
-    const columns = [0, 1, 2, 3, 4];
-    const rows = [0, 1, 2, 3, 4];
-    let cellCount = 0;
-    const CENTER = 2;
-
-    return (
-      <>
-        <AdminTools
-          setShowTasks={setShowTasks}
-          randomizeBoard={randomizeBoard}
-        />
-        <div className="content">
-          <div className="board">
-            {(inputFile.logo || inputFile.supplementImage) && (
-              <div className="header">
-                {inputFile.logo && (
-                  <Image
-                    width={256}
-                    height={142}
-                    alt={"Logo"}
-                    className="logo"
-                    src={`/images/${inputFile.logo}`}
-                  />
-                )}
-                {inputFile.supplementImage && (
-                  <Image
-                    width={140}
-                    height={140}
-                    alt="QR Code"
-                    className="supplement"
-                    src={`/images/${inputFile.supplementImage}`}
-                  />
-                )}
-              </div>
-            )}
-            <div className="name">Navn:</div>
-            {entries &&
-              rows.map((r) => (
-                <div className="row" key={r}>
-                  {columns.map((c) => {
-                    return (
-                      <div className="column" key={`${c}${r}`}>
-                        {c === CENTER && r === CENTER ? (
-                          <div className="cell empty"></div>
-                        ) : (
-                          <Cell
-                            index={cellCount++}
-                            boardState={filledBoard}
-                            entries={entries}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-            <div className="rules">
-              {inputFile.rules.map((rule, i) => (
-                <p key={"rule" + i}>{rule}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {showTasks && (
-          <div>
-            {entries?.map((entry) => (
-              <p key={"tastList" + entry.id}>{entry.description}</p>
-            ))}
-          </div>
-        )}
-      </>
-    );
+  if (!entries) {
+    return <div>Loading...</div>;
   }
 
   return (
     <main className={styles.main}>
-      <Board />
+      <AdminTools setShowTasks={setShowTasks} randomizeBoard={randomizeBoard} />
+      <Board
+        entries={entries}
+        entriesOrder={shuffleArray(filteredEntries)}
+        input={input}
+      />
+      {showTasks && (
+        <div>
+          {entries?.map((entry) => (
+            <p key={"tastList" + entry.id}>{entry.description}</p>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
