@@ -16,6 +16,27 @@ Hvis egenskapen `icon` er i et entry, vil et ikon dukke opp _etter_ teksten. Iko
 ***input.json***:
 ```json
 {
+  "logo": "grimcon2024.jpeg",
+  "supplementImage": "qr.png",
+  "header": "Navn",
+  "icons": [
+    {
+      "name": "idea",
+      "image": "ideskaper.png"
+    },
+    {
+      "name": "fire",
+      "image": "ildsjel.png"
+    },
+    {
+      "name": "merchant",
+      "image": "kremmer.png"
+    },
+    {
+      "name": "guide",
+      "image": "veiviser.png"
+    }
+  ],
   "minimumPerCategory": 5,
     "categories": [
     { "name": "game" },
@@ -38,6 +59,12 @@ Hvis egenskapen `icon` er i et entry, vil et ikon dukke opp _etter_ teksten. Iko
       "category": "task",
       "icon": "idea",
     },
-  ]
+  ],
+    "rules": [
+    "Velkommen til GrimCon-bingo! Her skal du prøve å oppnå Bingo ved å fullføre forskjellige oppgaver og prøve å få fem-på-rad. Vertikalt, horisontalt og diagonalt er alle gyldige linjer, og midten er allerede krysset av!",
+    "For å få et lodd i trekningen av premie av gratis helgepass neste år, må du ha 3 fem-på-rad blant de gyldige linjene.",
+    "Har du fylt ut hele brettet, teller det som to lodd. Innleveringsfrist søndag kl 15.",
+    "Tusen takk til Marthe fra Sola brettspillklubb som lot oss få bruke ideen hennes til Grimcon 2024!"
+  ],
 }
 ```
