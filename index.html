@@ -6,7 +6,6 @@
     <title>Grimcon Bingo</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/i18next/dist/umd/i18next.js"></script>
 
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -262,13 +261,16 @@
         }
 
         function loadDefault(e) {
-          fetch("grimcon2024.json")
+          fetch("https://takras.github.io/event-bingo/grimcon2024.json", {})
             .then((response) => {
               if (response.ok) {
                 console.log("File loaded");
               }
+              return response.json();
             })
-            .then((data) => setInput(JSON.parse(data)))
+            .then((data) => {
+              setInput(data);
+            })
             .catch((error) => console.error(error));
         }
 

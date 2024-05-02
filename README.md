@@ -25,18 +25,15 @@ Hvis egenskapen `icon` er i et entry, vil et ikon dukke opp _etter_ teksten. Iko
   ],
   "entries": [
     {
-      "id": 0,
       "description": "Vinn i et spill med minst 4 spillere.",
       "category": "game",
     },
     {
-      "id": 1,
       "description":
         "Trill en terning så dårlig at den faller i gulvet, og få noen andre til å plukke den opp for deg.",
       "category": "task",
     },
     {
-      "id": 24,
       "description": "Ta en selfie med en ",
       "category": "task",
       "icon": "idea",
