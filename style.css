@@ -1,0 +1,118 @@
+@media print {
+  .adminTools {
+    display: none !important;
+  }
+  .content {
+    page-break-before: always;
+  }
+}
+
+/* Set A4 size */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+/* Set content to fill the entire A4 page */
+html,
+body {
+  width: 210mm;
+  height: 297mm;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style content with shaded background */
+.content {
+  background-color: antiquewhite;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  justify-items: end;
+  justify-content: center;
+}
+
+.name {
+  font-size: xx-large;
+  padding-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: flex-start;
+  width: 60%;
+  border-bottom: 1px solid black;
+}
+
+.logo {
+  max-width: 50%;
+  max-height: 100px;
+}
+
+.supplement {
+  max-height: 140px;
+  margin-bottom: -60px;
+  margin-left: -70px;
+}
+
+.rules {
+  padding: 20px;
+}
+
+.rules p {
+  padding-bottom: 15px;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: bottom;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.cell {
+  border: 3px solid black;
+  background-color: aliceblue;
+  width: 140px;
+  height: 140px;
+  padding: 5px;
+}
+.empty {
+  border-radius: 5px;
+  position: relative;
+}
+.empty:after {
+  position: absolute;
+  margin-top: 18px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: "\274c";
+  font-size: 120px;
+  color: #fff;
+  line-height: 100px;
+  text-align: center;
+}

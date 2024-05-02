@@ -6,124 +6,13 @@
     <title>Grimcon Bingo</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/i18next/dist/umd/i18next.js"></script>
+    <link rel="stylesheet" href="./style.css" />
 
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
     <div id="root"></div>
-    <style>
-      /* Set A4 size */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      @page {
-        size: A4;
-        margin: 0;
-      }
-
-      /* Set content to fill the entire A4 page */
-      html,
-      body {
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      /* Style content with shaded background */
-      .content {
-        background-color: antiquewhite;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-      }
-
-      .header {
-        display: grid;
-        grid-template-columns: 5fr 3fr;
-        justify-items: end;
-        justify-content: center;
-      }
-
-      .name {
-        font-size: xx-large;
-        padding-top: 20px;
-        margin-bottom: 20px;
-        margin-left: auto;
-        margin-right: auto;
-        display: flex;
-        justify-content: flex-start;
-        width: 60%;
-        border-bottom: 1px solid black;
-      }
-
-      .logo {
-        max-width: 50%;
-        max-height: 100px;
-      }
-
-      .supplement {
-        max-height: 140px;
-        margin-bottom: -60px;
-        margin-left: -70px;
-      }
-
-      .rules {
-        padding: 20px;
-      }
-
-      .rules p {
-        padding-bottom: 15px;
-      }
-
-      .board {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      .icon {
-        width: 20px;
-        height: 20px;
-        vertical-align: bottom;
-      }
-      .row {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      }
-      .cell {
-        border: 3px solid black;
-        background-color: aliceblue;
-        width: 140px;
-        height: 140px;
-        padding: 5px;
-      }
-      .empty {
-        border-radius: 5px;
-        position: relative;
-      }
-      .empty:after {
-        position: absolute;
-        margin-top: 18px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        content: "\274c";
-        font-size: 120px;
-        color: #fff;
-        line-height: 100px;
-        text-align: center;
-      }
-    </style>
     <script type="text/babel">
       const icons = [
         {
@@ -154,14 +43,10 @@
           { name: "merch" },
         ],
         rules: [
-          `Velkommen til GrimCon-bingo! Her skal du prøve å oppnå Bingo ved å
-                fullføre forskjellige oppgaver og prøve å få fem-på-rad. Vertikalt, horisontalt og
-                diagonalt er alle gyldige, og midten er allerede krysset av!`,
-          `Første person som har fem på rad og roper Bingo! til resepsjonen får en premie.`,
-          `Det er fortsatt mulighet å vinne! Hvis du får til hele to linjer kan du også rope Bingo!
-                Igjen er det førstemann til mølla!`,
-          `Tusen takk til Marthe fra Sola brettspillklubb som lot oss få bruke ideen hennes til
-                Grimcon 2024!`,
+          "Velkommen til GrimCon-bingo! Her skal du prøve å oppnå Bingo ved å fullføre forskjellige oppgaver og prøve å få fem-på-rad. Vertikalt, horisontalt og diagonalt er alle gyldige linjer, og midten er allerede krysset av!",
+          "For å få et lodd i trekningen av premie av gratis helgepass neste år, må du ha 3 fem-på-rad blant de gyldige linjene.",
+          "Har du fylt ut hele brettet, teller det som to lodd. Innleveringsfrist søndag kl 15.",
+          "Tusen takk til Marthe fra Sola brettspillklubb som lot oss få bruke ideen hennes til Grimcon 2024!",
         ],
         entries: [
           {
@@ -430,40 +315,69 @@
         const rows = [0, 1, 2, 3, 4];
         let cellCount = 0;
         const CENTER = 2;
+
+        const [showTasks, setShowTasks] = React.useState(false);
+
+        function randomizeBoard() {}
+
+        function AdminTools() {
+          return (
+            <div className="adminTools">
+              <button type="button" onClick={randomizeBoard}>
+                Randomize
+              </button>
+              <button type="button" onClick={() => setShowTasks(!showTasks)}>
+                Show total available tasks
+              </button>
+            </div>
+          );
+        }
+
         return (
-          <div className="content">
-            <div className="board">
-              {(input.logo || input.supplementImage) && (
-                <div className="header">
-                  {input.logo && <img className="logo" src={input.logo} />}
-                  {input.supplementImage && (
-                    <img className="supplement" src={input.supplementImage} />
-                  )}
-                </div>
-              )}
-              <div className="name">Navn:</div>
-              {rows.map((r) => (
-                <div className="row" key={r}>
-                  {columns.map((c) => {
-                    return (
-                      <div className="column" key={c}>
-                        {c === CENTER && r === CENTER ? (
-                          <EmptyCell />
-                        ) : (
-                          <Cell index={cellCount++} />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-              <div className="rules">
-                {input.rules.map((rule) => (
-                  <p>{rule}</p>
+          <>
+            <AdminTools />
+            <div className="content">
+              <div className="board">
+                {(input.logo || input.supplementImage) && (
+                  <div className="header">
+                    {input.logo && <img className="logo" src={input.logo} />}
+                    {input.supplementImage && (
+                      <img className="supplement" src={input.supplementImage} />
+                    )}
+                  </div>
+                )}
+                <div className="name">Navn:</div>
+                {rows.map((r) => (
+                  <div className="row" key={r}>
+                    {columns.map((c) => {
+                      return (
+                        <div className="column" key={`${c}${r}`}>
+                          {c === CENTER && r === CENTER ? (
+                            <EmptyCell />
+                          ) : (
+                            <Cell index={cellCount++} />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 ))}
+                <div className="rules">
+                  {input.rules.map((rule, i) => (
+                    <p key={"rule" + i}>{rule}</p>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+
+            {showTasks && (
+              <div>
+                {input.entries.map((entry) => (
+                  <p key={"tastList" + entry.id}>{entry.description}</p>
+                ))}
+              </div>
+            )}
+          </>
         );
       }
 
