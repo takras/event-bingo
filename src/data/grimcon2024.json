@@ -156,6 +156,26 @@
     {
       "description": "Kommenter et av de andres bilder på GrimCons Facebook-gruppe.",
       "category": "social"
+    },
+    {
+      "description": "Gi klem til en ",
+      "category": "social",
+      "icon": "fire"
+    },
+    {
+      "description": "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+      "category": "social",
+      "icon": "guide"
+    },
+    {
+      "description": "Ta en high-five med en ",
+      "category": "social",
+      "icon": "merchant"
+    },
+    {
+      "description": "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+      "category": "social",
+      "icon": "idea"
     }
   ]
 }

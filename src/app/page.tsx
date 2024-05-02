@@ -152,16 +152,13 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
 
 type GetRandomEntries = {
   entriesToPickFrom: EntryWithId[];
-  maximumPicks?: number;
+  minimumPicks: number;
 };
 const getRandomEntriesFromList = ({
   entriesToPickFrom,
-  maximumPicks,
+  minimumPicks,
 }: GetRandomEntries) => {
-  const MAXIMUM_PICKS = 24;
-  const MINIUM_SELECTION = maximumPicks
-    ? MAXIMUM_PICKS - entriesToPickFrom.length
-    : 5;
+  const MINIUM_SELECTION = Math.min(minimumPicks, entriesToPickFrom.length);
 
   const MIN = 0;
   const MAX = entriesToPickFrom.length;
@@ -210,19 +207,21 @@ export default function Home() {
       const list = entries.filter((entry) => entry.category === category.name);
       const randomList = getRandomEntriesFromList({
         entriesToPickFrom: list,
-        maximumPicks: input.defaultMinimumPerCategory,
+        minimumPicks: input.defaultMinimumPerCategory,
       });
       pickedEntries.push(...randomList);
-      setFilteredEntries((current) => [...current, ...randomList]);
     });
 
     const remainingEntries = entries.filter(
       (entry) => !pickedEntries.includes(entry.id)
     );
+
     const remaining = getRandomEntriesFromList({
       entriesToPickFrom: remainingEntries,
+      minimumPicks: 24 - pickedEntries.length,
     });
-    setFilteredEntries((current) => [...current, ...remaining]);
+
+    setFilteredEntries([...pickedEntries, ...remaining]);
   }, [entries, input.categories, input.defaultMinimumPerCategory]);
 
   useEffect(() => {}, [entries]);
@@ -249,9 +248,14 @@ export default function Home() {
       />
       {showTasks && (
         <div>
-          {entries?.map((entry) => (
-            <p key={"tastList" + entry.id}>{entry.description}</p>
-          ))}
+          <button onClick={() => setShowTasks(false)}>Hide tasks</button>
+          {entries
+            .toSorted((a, b) => (a.category > b.category ? -1 : 1))
+            .map((entry) => (
+              <p key={"tastList" + entry.id}>
+                <strong>{entry.category}</strong> - {entry.description}
+              </p>
+            ))}
         </div>
       )}
     </main>
