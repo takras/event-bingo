@@ -1,0 +1,177 @@
+{
+  "logo": "grimcon2024.jpeg",
+  "supplementImage": "qr.png",
+  "header": "Navn",
+  "icons": [
+    {
+      "name": "idea",
+      "image": "ideskaper.png"
+    },
+    {
+      "name": "fire",
+      "image": "ildsjel.png"
+    },
+    {
+      "name": "merchant",
+      "image": "kremmer.png"
+    },
+    {
+      "name": "guide",
+      "image": "veiviser.png"
+    }
+  ],
+  "defaultMinimumPerCategory": 5,
+  "categories": [
+    { "name": "game" },
+    { "name": "task" },
+    { "name": "social" },
+    { "name": "merch" }
+  ],
+  "rules": [
+    "Velkommen til GrimCon-bingo! Her skal du prøve å oppnå Bingo ved å fullføre forskjellige oppgaver og prøve å få fem-på-rad. Vertikalt, horisontalt og diagonalt er alle gyldige linjer, og midten er allerede krysset av!",
+    "For å få et lodd i trekningen av premie av gratis helgepass neste år, må du ha 3 fem-på-rad blant de gyldige linjene.",
+    "Har du fylt ut hele brettet, teller det som to lodd. Innleveringsfrist søndag kl 15.",
+    "Tusen takk til Marthe fra Sola brettspillklubb som lot oss få bruke ideen hennes til Grimcon 2024!"
+  ],
+  "entries": [
+    {
+      "description": "Vinn i et spill med minst 4 spillere.",
+      "category": "game"
+    },
+
+    {
+      "description": "Trill en terning så dårlig at den faller i gulvet, og få noen andre til å plukke den opp for deg.",
+      "category": "task"
+    },
+
+    {
+      "description": "Spill et spill som starter med samme forbokstav som deg.",
+      "category": "game"
+    },
+
+    {
+      "description": "Ta en selfie med Stian eller Steinar.",
+      "category": "social"
+    },
+
+    {
+      "description": "Spill med minst 10 forskjellige mennesker i løpet av GrimCon.",
+      "category": "game"
+    },
+
+    {
+      "description": "Spill 5 nye (for deg) spill.",
+      "category": "game"
+    },
+
+    { "description": "Spill et spill fra 2024.", "category": "game" },
+
+    {
+      "description": "Spill et spill som kom ut før år 2000.",
+      "category": "game"
+    },
+
+    {
+      "description": "Spill et spill med noen som er på GrimCon for første gang.",
+      "category": "social"
+    },
+
+    {
+      "description": "Spill et spill med bare ukjente mennesker.",
+      "category": "social"
+    },
+
+    {
+      "description": "Spill et spill under bordet.",
+      "category": "task"
+    },
+
+    {
+      "description": "Spill et spill kun for 2 spillere.",
+      "category": "game"
+    },
+
+    {
+      "description": "Stå på en stol og annonser til alle (minst 15) at GrimCon er supert.",
+      "category": "task"
+    },
+
+    {
+      "description": "Spill et spill med dyr som tema.",
+      "category": "game"
+    },
+
+    {
+      "description": "Spill et spill med verdensrom-tema.",
+      "category": "game"
+    },
+
+    {
+      "description": "Spill et spill til frokost.",
+      "category": "game"
+    },
+
+    {
+      "description": "Ta et artig bilde og post på GrimCons Facebook-gruppe.",
+      "category": "social"
+    },
+
+    {
+      "description": "Ta en seiersdans etter å ha vunnet i et spill.",
+      "category": "task"
+    },
+
+    {
+      "description": "Tøm et fullt glass på 30 sekund ved å drikke det.",
+      "category": "task"
+    },
+    {
+      "description": "Rydd et bord for kopper og søppel.",
+      "category": "task"
+    },
+    {
+      "description": "Finn opp en regel og få noen til å sjekke reglene.",
+      "category": "task"
+    },
+    {
+      "description": "Gi klem til en ",
+      "category": "social",
+      "icon": "fire"
+    },
+    {
+      "description": "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+      "category": "social",
+      "icon": "guide"
+    },
+    {
+      "description": "Ta en high-five med en ",
+      "category": "social",
+      "icon": "merchant"
+    },
+    {
+      "description": "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+      "category": "social",
+      "icon": "idea"
+    },
+    {
+      "description": "Spill et spill stående.",
+      "category": "task"
+    },
+    {
+      "description": "Stable spillbrikkene dine og del bildet i GrimCon-gruppa på Facebook.",
+      "category": "social"
+    },
+    {
+      "description": "Spill et spill som ikke har terninger.",
+      "category": "game"
+    },
+    {
+      "description": "Sjekk ut hva Grimfield Games har til salgs.",
+      "category": "merch"
+    },
+    {
+      "description": "Spill en prototype.",
+      "category": "game"
+    }
+  ]
+}
