@@ -15,7 +15,7 @@ type AdminTools = {
   setInput: Dispatch<SetStateAction<InputFile>>;
 };
 const AdminTools = ({ randomizeBoard, setShowTasks, setInput }: AdminTools) => {
-  function handleFileChange(e) {
+  function handleFileChange(e: any) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsText(file);
