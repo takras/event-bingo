@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Entry, InputFile } from "@/types";
 import grimcon from "@/data/grimcon2024.json";
+import classnames from "classnames";
 
 const basePath = "/event-bingo";
 
@@ -119,10 +120,11 @@ const Board = ({ entries, input, entriesOrder, tasksAreShown }: Board) => {
   const rows = [0, 1, 2, 3, 4];
   let cellCount = 0;
   const CENTER = 2;
+  const classNames = classnames("board", tasksAreShown ? "blurred" : "");
 
   return (
     <div className="content">
-      <div className={`board` && tasksAreShown ? "blurred" : ""}>
+      <div className={classNames}>
         {(input.logo || input.supplementImage) && (
           <div className="header">
             {input.logo && (
@@ -282,7 +284,7 @@ export default function Home() {
         numberOfPages={numberOfPages}
         setNumberOfPages={setNumberOfPages}
       />
-      {pagesOfBoards.map((board, i) => (
+      {pagesOfBoards.map((_board, i) => (
         <Board
           key={i}
           entries={entries}
