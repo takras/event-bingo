@@ -4,7 +4,7 @@
     display: none !important;
   }
   .content {
-    /*page-break-before: always;*/
+    page-break-before: always;
   }
 }
 
@@ -57,6 +57,20 @@ body {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+}
+
+.pagesCounter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    padding: 15px;
+  }
+
+  span {
+    font-size: 50px;
+  }
 }
 
 .name {

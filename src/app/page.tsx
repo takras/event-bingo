@@ -11,10 +11,18 @@ type EntryWithId = Entry & { id: number };
 
 type AdminTools = {
   randomizeBoard: () => void;
+  numberOfPages: number;
+  setNumberOfPages: Dispatch<SetStateAction<number>>;
   setShowTasks: Dispatch<SetStateAction<boolean>>;
   setInput: Dispatch<SetStateAction<InputFile>>;
 };
-const AdminTools = ({ randomizeBoard, setShowTasks, setInput }: AdminTools) => {
+const AdminTools = ({
+  randomizeBoard,
+  setShowTasks,
+  setInput,
+  numberOfPages,
+  setNumberOfPages,
+}: AdminTools) => {
   function handleFileChange(e: any) {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -44,6 +52,21 @@ const AdminTools = ({ randomizeBoard, setShowTasks, setInput }: AdminTools) => {
       >
         Download sample file
       </a>
+      <div className="pagesCounter">
+        <button
+          type="button"
+          onClick={() => setNumberOfPages((current) => current + 1)}
+        >
+          +
+        </button>
+        <span>{numberOfPages}</span>
+        <button
+          type="button"
+          onClick={() => setNumberOfPages((current) => current - 1)}
+        >
+          -
+        </button>
+      </div>
     </div>
   );
 };
@@ -214,6 +237,7 @@ export default function Home() {
   const [filteredEntries, setFilteredEntries] = useState<number[]>([]);
   const [entries, setEntries] = useState<EntryWithId[]>();
   const [showTasks, setShowTasks] = useState(false);
+  const [numberOfPages, setNumberOfPages] = useState(1);
 
   useEffect(() => {
     setEntries(input.entries.map((entry, id) => ({ ...entry, id })));
@@ -250,7 +274,7 @@ export default function Home() {
   useEffect(() => {}, [entries]);
 
   function shuffleArray(list: number[]) {
-    return list.sort(() => Math.random() - 0.5);
+    return list.toSorted(() => Math.random() - 0.5);
   }
 
   function randomizeBoard() {
@@ -261,19 +285,29 @@ export default function Home() {
     return <div>Loading...</div>;
   }
 
+  const pagesOfBoards = [];
+  while (pagesOfBoards.length < Math.max(numberOfPages, 1)) {
+    pagesOfBoards.push(filteredEntries.toSorted(() => Math.random() - 0.5));
+  }
+
   return (
     <main className={styles.main}>
       <AdminTools
         setShowTasks={setShowTasks}
         randomizeBoard={randomizeBoard}
         setInput={setInput}
+        numberOfPages={numberOfPages}
+        setNumberOfPages={setNumberOfPages}
       />
-      <Board
-        entries={entries}
-        entriesOrder={shuffleArray(filteredEntries)}
-        input={input}
-        tasksAreShown={showTasks}
-      />
+      {pagesOfBoards.map((board, i) => (
+        <Board
+          key={i}
+          entries={entries}
+          entriesOrder={shuffleArray(filteredEntries)}
+          input={input}
+          tasksAreShown={showTasks}
+        />
+      ))}
       {showTasks && (
         <div className="taskList">
           <button onClick={() => setShowTasks(false)}>Hide tasks</button>
