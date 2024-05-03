@@ -75,10 +75,12 @@ const Cell = ({
   index,
   boardState,
   entries,
+  icons,
 }: {
   index: number;
   boardState: number[];
   entries: EntryWithId[];
+  icons: Icon[];
 }) => {
   const id = boardState[index];
   const entry = entries?.find((e, i) => i === id);
@@ -88,42 +90,22 @@ const Cell = ({
   return (
     <div className="cell">
       {entry.description}
-      {entry.icon && getIcon(entry.icon)}
+      {entry.icon && getIcon({ name: entry.icon, icons })}
     </div>
   );
 };
 
-function getIcon(name: string) {
-  const icons = [
-    {
-      name: "idea",
-      image: "ideskaper.png",
-    },
-    {
-      name: "fire",
-      image: "ildsjel.png",
-    },
-    {
-      name: "merchant",
-      image: "kremmer.png",
-    },
-    {
-      name: "guide",
-      image: "veiviser.png",
-    },
-  ];
-
+type Icon = { name: string; image: string };
+type GetIcon = {
+  name: string;
+  icons: Icon[];
+};
+function getIcon({ name, icons }: GetIcon) {
   const icon = icons.find((icon) => icon.name === name);
   if (!icon) {
     return null;
   }
-  return (
-    <img
-      alt={icon.name}
-      className={"icon"}
-      src={`${basePath}/images/${icon.image}`}
-    />
-  );
+  return <img alt={icon.name} className={"icon"} src={icon.image} />;
 }
 
 type Board = {
@@ -179,6 +161,7 @@ const Board = ({ entries, input, entriesOrder, tasksAreShown }: Board) => {
                         index={cellCount++}
                         boardState={entriesOrder}
                         entries={entries}
+                        icons={input.icons}
                       />
                     )}
                   </div>
@@ -316,7 +299,8 @@ export default function Home() {
             .map((entry) => (
               <p key={"tastList" + entry.id}>
                 <strong>{entry.category}</strong> - {entry.description}
-                {entry.icon && getIcon(entry.icon)}
+                {entry.icon &&
+                  getIcon({ name: entry.icon, icons: input.icons })}
               </p>
             ))}
         </div>
