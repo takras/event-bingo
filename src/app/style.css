@@ -4,7 +4,7 @@
     display: none !important;
   }
   .content {
-    /*page-break-before: always;*/
+    page-break-before: always;
   }
 }
 
