@@ -1,6 +1,6 @@
 {
-  "logo": "grimcon2024.jpeg",
-  "supplementImage": "qr.png",
+  "logo": "https://takras.github.io/event-bingo/images/grimcon2024.jpeg",
+  "supplementImage": "https://takras.github.io/event-bingo/images/qr.png",
   "header": "Navn",
   "icons": [
     {
@@ -173,7 +173,7 @@
       "icon": "merchant"
     },
     {
-      "description": "Del på GrimCons Facebook-gruppe en selfie sammen med en ",
+      "description": "Spill et spill med en ",
       "category": "social",
       "icon": "idea"
     }

@@ -1,0 +1,144 @@
+{
+  "logo": "https://patternniche.com/wp-content/uploads/2016/09/bingo.png",
+  "supplementImage": "https://play-lh.googleusercontent.com/AGR1f-ipIP44j8vdb7BZwkHUGFkEYAh9AE-ncEyFniYlY0153n_IFoCJ4SN4K5oHrw",
+  "header": "Name",
+  "icons": [
+    {
+      "name": "idea",
+      "image": "ideskaper.png"
+    },
+    {
+      "name": "fire",
+      "image": "ildsjel.png"
+    },
+    {
+      "name": "merchant",
+      "image": "kremmer.png"
+    },
+    {
+      "name": "guide",
+      "image": "veiviser.png"
+    }
+  ],
+  "defaultMinimumPerCategory": 5,
+  "categories": [
+    { "name": "ball" },
+    { "name": "animal" },
+    { "name": "math" },
+    { "name": "task" }
+  ],
+  "rules": [
+    "Rules are simple. When a task is announced or completed, you cross it off.",
+    "If you have five-in-a-row (vertical, horizontally or diagonal), then that's a Bingo!"
+  ],
+  "entries": [
+    {
+      "description": "B 4",
+      "category": "ball"
+    },
+
+    {
+      "description": "B 1",
+      "category": "ball"
+    },
+
+    {
+      "description": "B 5",
+      "category": "ball"
+    },
+
+    {
+      "description": "B 2",
+      "category": "ball"
+    },
+
+    {
+      "description": "B 3",
+      "category": "ball"
+    },
+
+    {
+      "description": "Dog",
+      "category": "animal"
+    },
+
+    { "description": "Cat.", "category": "animal" },
+
+    {
+      "description": "Horse",
+      "category": "animal"
+    },
+    {
+      "description": "Elephant",
+      "category": "animal"
+    },
+    {
+      "description": "Mouse",
+      "category": "animal"
+    },
+
+    {
+      "description": "Solve 2 + 2",
+      "category": "math"
+    },
+    {
+      "description": "Solve 2 * 2",
+      "category": "math"
+    },
+    {
+      "description": "Solve 4 - 2",
+      "category": "math"
+    },
+    {
+      "description": "Solve square root of 3",
+      "category": "math"
+    },
+    {
+      "description": "Run as fast as speed of light",
+      "category": "math"
+    },
+
+    {
+      "description": "Juggle 3 balls for 5 seconds",
+      "category": "task"
+    },
+
+    {
+      "description": "Sing a song",
+      "category": "task"
+    },
+
+    {
+      "description": "Give high-fives to 5 people",
+      "category": "task"
+    },
+    {
+      "description": "Introduce yourself to a stranger",
+      "category": "task"
+    },
+    {
+      "description": "Do the plank",
+      "category": "task"
+    },
+    {
+      "description": "Turn off your phone",
+      "category": "task"
+    },
+    {
+      "description": "Make an awkward joke",
+      "category": "task"
+    },
+    {
+      "description": "Make a joke and someone actually laughs of it",
+      "category": "task"
+    },
+    {
+      "description": "Do a dad-joke",
+      "category": "task"
+    },
+    {
+      "description": "Run around waving your hands",
+      "category": "task"
+    }
+  ]
+}

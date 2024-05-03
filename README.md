@@ -1,17 +1,41 @@
 # event-bingo
-Bingo for eventer 
+Bingo for events
 
-Trenger json-struktur i en fil. minimumPerCategory er påkrevd og minst en kategori-type.
+Made this for a board game event called GrimCon in Grimstad, Norway. Then expanded it to be more flexible with more input.
+Default configuration is loaded, but you can use your own json-file.
 
-## Krav
+[Try it out](https://takras.github.io/event-bingo/).
 
-Kategori i `category` *må* være korrekt og eksistere i `categories` listen.
+## Requirements
 
-Hvis egenskapen `icon` er i et entry, vil et ikon dukke opp _etter_ teksten. Ikonene kan være et av følgende:
+You must have *AT LEAST* 24 entries.
 
-    idea, fire, merchant, guide
+### Entries
+```json
+  [{
+    "description": "Ta en selfie med en ",
+    "category": "task",
+    "icon": "idea",
+  }]
+```
+The categories for entries has to be present, and needs to match the categories in the `categories` list.
 
-`minimumPerCategory` må være minst 1.
+`icon` is not required, but if present, a matching `name`  in the `icons` list must be present and contain a direct link to the image.
+
+### Icons
+Images used in GrimCon are `idea`, `fire`, `merchant` and `guide` and are hosted here.
+
+### Logo
+URL to the logo.
+
+### Supplement Image
+I use this to display a 140x140 pixel QR code on the top right. If you want a squared image there, this is the one to use. If not, delete it.
+
+### Header
+What it will display prior to the long horizontal line on top, i.e. "Name".
+
+### Rules
+One paragrapgh per array entry. Don't make the list too long, or it will not fit an A4 paper size, which this app is scaled for.
 
 ***input.json***:
 ```json

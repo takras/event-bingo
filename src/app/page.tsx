@@ -12,8 +12,22 @@ type EntryWithId = Entry & { id: number };
 type AdminTools = {
   randomizeBoard: () => void;
   setShowTasks: Dispatch<SetStateAction<boolean>>;
+  setInput: Dispatch<SetStateAction<InputFile>>;
 };
-const AdminTools = ({ randomizeBoard, setShowTasks }: AdminTools) => {
+const AdminTools = ({ randomizeBoard, setShowTasks, setInput }: AdminTools) => {
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      const json = JSON.parse(reader.result as string);
+      setInput(json);
+    };
+    reader.onerror = () => {
+      console.log("file error", reader.error);
+    };
+  }
+
   return (
     <div className="adminTools">
       <button type="button" onClick={randomizeBoard}>
@@ -22,6 +36,14 @@ const AdminTools = ({ randomizeBoard, setShowTasks }: AdminTools) => {
       <button type="button" onClick={() => setShowTasks(true)}>
         Show total available tasks
       </button>
+      <input type="file" onChange={handleFileChange}></input>
+      <a
+        href="/event-bingo/example.json"
+        download={true}
+        type="application/json"
+      >
+        Download sample file
+      </a>
     </div>
   );
 };
@@ -85,8 +107,9 @@ type Board = {
   entries: EntryWithId[];
   entriesOrder: number[];
   input: InputFile;
+  tasksAreShown?: boolean;
 };
-const Board = ({ entries, input, entriesOrder }: Board) => {
+const Board = ({ entries, input, entriesOrder, tasksAreShown }: Board) => {
   const columns = [0, 1, 2, 3, 4];
   const rows = [0, 1, 2, 3, 4];
   let cellCount = 0;
@@ -94,7 +117,7 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
 
   return (
     <div className="content">
-      <div className="board">
+      <div className={`board` && tasksAreShown ? "blurred" : ""}>
         {(input.logo || input.supplementImage) && (
           <div className="header">
             {input.logo && (
@@ -103,7 +126,7 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
                 height={142}
                 alt={"Logo"}
                 className="logo"
-                src={`${basePath}/images/${input.logo}`}
+                src={input.logo}
               />
             )}
             {input.supplementImage && (
@@ -112,12 +135,12 @@ const Board = ({ entries, input, entriesOrder }: Board) => {
                 height={140}
                 alt="QR Code"
                 className="supplement"
-                src={`${basePath}/images/${input.supplementImage}`}
+                src={input.supplementImage}
               />
             )}
           </div>
         )}
-        <div className="name">Navn:</div>
+        <div className="name">{input.header}</div>
         {entries &&
           rows.map((r) => (
             <div className="row" key={r}>
@@ -240,20 +263,26 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <AdminTools setShowTasks={setShowTasks} randomizeBoard={randomizeBoard} />
+      <AdminTools
+        setShowTasks={setShowTasks}
+        randomizeBoard={randomizeBoard}
+        setInput={setInput}
+      />
       <Board
         entries={entries}
         entriesOrder={shuffleArray(filteredEntries)}
         input={input}
+        tasksAreShown={showTasks}
       />
       {showTasks && (
-        <div>
+        <div className="taskList">
           <button onClick={() => setShowTasks(false)}>Hide tasks</button>
           {entries
             .toSorted((a, b) => (a.category > b.category ? -1 : 1))
             .map((entry) => (
               <p key={"tastList" + entry.id}>
                 <strong>{entry.category}</strong> - {entry.description}
+                {entry.icon && getIcon(entry.icon)}
               </p>
             ))}
         </div>
