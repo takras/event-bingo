@@ -1,0 +1,12 @@
+.guideContainer {
+  background-color: aliceblue;
+  border: 1px solid black;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.json {
+  background-color: rgb(206, 206, 206);
+  border: 1px solid black;
+  color: rgb(131, 56, 2);
+}

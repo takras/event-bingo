@@ -18,8 +18,10 @@ export interface Category {
   name: string;
 }
 
-export interface Entry {
+interface Entry {
   description: string;
   category: string;
   icon?: string;
 }
+
+export type EntryWithId = Entry & { id: number };

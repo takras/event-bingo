@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./style.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import styles from "./layout.module.css";
 
 export const metadata: Metadata = {
   title: "Event-Bingo",
@@ -15,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={styles.html}>
+      <body className={styles.body}>{children}</body>
     </html>
   );
 }

@@ -1,0 +1,16 @@
+/* Set A4 size */
+.body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set content to fill the entire A4 page */
+.html,
+.body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

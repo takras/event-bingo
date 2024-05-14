@@ -1,0 +1,36 @@
+.generate {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.textArea {
+  width: 600px;
+  height: 600px;
+}
+
+.logoContainer {
+  width: 500px;
+  height: 150px;
+  border: 2px dotted #ccc;
+  text-align: center;
+  overflow: hidden;
+}
+
+.logo {
+  max-width: 500px;
+  max-height: 150px;
+}
+
+.supplementContainer {
+  height: 140px;
+  width: 140px;
+  overflow: hidden;
+  border: 2px dotted #ccc;
+}
+
+.supplementImage {
+  max-height: 140px;
+  aspect-ratio: 1;
+}

@@ -1,113 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import styles from "./page.module.css";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Entry, InputFile } from "@/types";
+import { useEffect, useState } from "react";
+import { EntryWithId, InputFile } from "@/types";
+import { ToolsMenu } from "./tools-menu";
+import { Cell } from "./cell";
+import { getIcon } from "@/utils";
+import { Guide } from "./guide";
 import grimcon from "@/data/grimcon2024.json";
 import classnames from "classnames";
+import styles from "./page.module.css";
 
 const basePath = "/event-bingo";
-
-type EntryWithId = Entry & { id: number };
-
-type AdminTools = {
-  randomizeBoard: () => void;
-  numberOfPages: number;
-  setNumberOfPages: Dispatch<SetStateAction<number>>;
-  setShowTasks: Dispatch<SetStateAction<boolean>>;
-  setInput: Dispatch<SetStateAction<InputFile>>;
-};
-const AdminTools = ({
-  randomizeBoard,
-  setShowTasks,
-  setInput,
-  numberOfPages,
-  setNumberOfPages,
-}: AdminTools) => {
-  function handleFileChange(e: any) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = () => {
-      const json = JSON.parse(reader.result as string);
-      setInput(json);
-    };
-    reader.onerror = () => {
-      console.log("file error", reader.error);
-    };
-  }
-
-  return (
-    <div className="adminTools">
-      <button type="button" onClick={randomizeBoard}>
-        Randomize
-      </button>
-      <button type="button" onClick={() => setShowTasks(true)}>
-        Show total available tasks
-      </button>
-      <input type="file" onChange={handleFileChange}></input>
-      <a
-        href="/event-bingo/example.json"
-        download={true}
-        type="application/json"
-      >
-        Download sample file
-      </a>
-      <div className="pagesCounter">
-        <button
-          type="button"
-          onClick={() => setNumberOfPages((current) => current + 1)}
-        >
-          +
-        </button>
-        <span>{numberOfPages}</span>
-        <button
-          type="button"
-          onClick={() => setNumberOfPages((current) => current - 1)}
-        >
-          -
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const Cell = ({
-  index,
-  boardState,
-  entries,
-  icons,
-}: {
-  index: number;
-  boardState: number[];
-  entries: EntryWithId[];
-  icons: Icon[];
-}) => {
-  const id = boardState[index];
-  const entry = entries?.find((e, i) => i === id);
-  if (!entry) {
-    return null;
-  }
-  return (
-    <div className="cell">
-      {entry.description}
-      {entry.icon && getIcon({ name: entry.icon, icons })}
-    </div>
-  );
-};
-
-type Icon = { name: string; image: string };
-type GetIcon = {
-  name: string;
-  icons: Icon[];
-};
-function getIcon({ name, icons }: GetIcon) {
-  const icon = icons.find((icon) => icon.name === name);
-  if (!icon) {
-    return null;
-  }
-  return <img alt={icon.name} className={"icon"} src={icon.image} />;
-}
 
 type Board = {
   entries: EntryWithId[];
@@ -120,62 +23,79 @@ const Board = ({ entries, input, entriesOrder, tasksAreShown }: Board) => {
   const rows = [0, 1, 2, 3, 4];
   let cellCount = 0;
   const CENTER = 2;
-  const classNames = classnames("board", tasksAreShown ? "blurred" : "");
+  const classNames = classnames(
+    styles.board,
+    tasksAreShown ? styles.blurred : null
+  );
 
   return (
-    <div className="content">
-      <div className={classNames}>
-        {(input.logo || input.supplementImage) && (
-          <div className="header">
-            {input.logo && (
-              <img
-                width={256}
-                height={142}
-                alt={"Logo"}
-                className="logo"
-                src={input.logo}
-              />
-            )}
-            {input.supplementImage && (
-              <img
-                width={140}
-                height={140}
-                alt="QR Code"
-                className="supplement"
-                src={input.supplementImage}
-              />
-            )}
-          </div>
-        )}
-        <div className="name">{input.header}</div>
-        {entries &&
-          rows.map((r) => (
-            <div className="row" key={r}>
-              {columns.map((c) => {
-                return (
-                  <div className="column" key={`${c}${r}`}>
-                    {c === CENTER && r === CENTER ? (
-                      <div className="cell empty">
-                        <img alt="X" src={`${basePath}/images/x.png`}></img>
-                      </div>
-                    ) : (
-                      <Cell
-                        index={cellCount++}
-                        boardState={entriesOrder}
-                        entries={entries}
-                        icons={input.icons}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        <div className="rules">
-          {input.rules.map((rule, i) => (
-            <p key={"rule" + i}>{rule}</p>
-          ))}
+    <div className={classNames}>
+      {input.supplementImage && (
+        <div className={styles.supplementHeader}>
+          <img
+            width={140}
+            height={140}
+            alt="QR Code"
+            className={styles.supplement}
+            src={input.supplementImage}
+          />
         </div>
+      )}
+      {input.logo && (
+        <div className={styles.header}>
+          {input.logo && (
+            <img
+              width={256}
+              height={142}
+              alt={"Logo"}
+              className={styles.logo}
+              src={input.logo}
+            />
+          )}
+        </div>
+      )}
+
+      <div className={styles.name}>{input.header}</div>
+      <div className={styles.gridContainer}>
+        <div className={styles.github}>
+          <div className={styles.url}>takras.github.io/event-bingo</div>
+        </div>
+        <div className={styles.grid}>
+          {entries &&
+            rows.map((r) => (
+              <div className={styles.row} key={r}>
+                {columns.map((c) => {
+                  return (
+                    <div className={styles.column} key={`${c}${r}`}>
+                      {c === CENTER && r === CENTER ? (
+                        <div className={classnames(styles.cell)}>
+                          <img
+                            className={styles.image}
+                            alt="X"
+                            src={`${basePath}/images/x.png`}
+                          ></img>
+                        </div>
+                      ) : (
+                        <Cell
+                          index={cellCount++}
+                          boardState={entriesOrder}
+                          entries={entries}
+                          icons={input.icons}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+        </div>
+      </div>
+      <div className={styles.rules}>
+        {input.rules.map((rule, i) => (
+          <p key={"rule" + i} className={styles.rule}>
+            {rule}
+          </p>
+        ))}
       </div>
     </div>
   );
@@ -222,6 +142,7 @@ export default function Home() {
   const [filteredEntries, setFilteredEntries] = useState<number[]>([]);
   const [entries, setEntries] = useState<EntryWithId[]>();
   const [showTasks, setShowTasks] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const [numberOfPages, setNumberOfPages] = useState(1);
 
   useEffect(() => {
@@ -275,38 +196,49 @@ export default function Home() {
     pagesOfBoards.push(filteredEntries.toSorted(() => Math.random() - 0.5));
   }
 
+  const showBoard = !showTasks && !showGuide;
+
   return (
     <main className={styles.main}>
-      <AdminTools
+      <ToolsMenu
         setShowTasks={setShowTasks}
         randomizeBoard={randomizeBoard}
         setInput={setInput}
         numberOfPages={numberOfPages}
         setNumberOfPages={setNumberOfPages}
+        setShowGuide={setShowGuide}
       />
-      {pagesOfBoards.map((_board, i) => (
-        <Board
-          key={i}
-          entries={entries}
-          entriesOrder={shuffleArray(filteredEntries)}
-          input={input}
-          tasksAreShown={showTasks}
-        />
-      ))}
-      {showTasks && (
-        <div className="taskList">
-          <button onClick={() => setShowTasks(false)}>Hide tasks</button>
-          {entries
-            .toSorted((a, b) => (a.category > b.category ? -1 : 1))
-            .map((entry) => (
-              <p key={"tastList" + entry.id}>
-                <strong>{entry.category}</strong> - {entry.description}
-                {entry.icon &&
-                  getIcon({ name: entry.icon, icons: input.icons })}
-              </p>
-            ))}
-        </div>
-      )}
+      <div className={styles.content}>
+        {showBoard &&
+          pagesOfBoards.map((_board, i) => (
+            <Board
+              key={i}
+              entries={entries}
+              entriesOrder={shuffleArray(filteredEntries)}
+              input={input}
+              tasksAreShown={showTasks}
+            />
+          ))}
+        {showTasks && (
+          <div className={styles.taskList}>
+            <h2>Tasks</h2>
+            {entries
+              .toSorted((a, b) => (a.category > b.category ? -1 : 1))
+              .map((entry) => (
+                <p key={"tastList" + entry.id}>
+                  <strong>{entry.category}</strong> - {entry.description}
+                  {entry.icon &&
+                    getIcon({
+                      name: entry.icon,
+                      icons: input.icons,
+                      className: styles.icon,
+                    })}
+                </p>
+              ))}
+          </div>
+        )}
+        {showGuide && <Guide />}
+      </div>
     </main>
   );
 }
