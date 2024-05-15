@@ -1,5 +1,6 @@
 import { InputFile } from "@/types";
 import { Dispatch, SetStateAction, useState } from "react";
+import Link from "next/link";
 import styles from "./tools-menu.module.css";
 import classNames from "classnames";
 
@@ -59,6 +60,7 @@ export const ToolsMenu = ({
       <button type="button" onClick={() => setShowGuide((current) => !current)}>
         Show/hide guide
       </button>
+      <Link href="/generate">Make a JSON file</Link>
       <input type="file" onChange={handleFileChange}></input>
       <a
         href="/event-bingo/example.json"

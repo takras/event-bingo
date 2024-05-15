@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { Category, InputFile, Entry, Icon } from "@/types";
 import { v4 } from "uuid";
+import grimcon from "@/data/grimcon2024.json";
+import Link from "next/link";
 import iconStyles from "@/app/page.module.css";
 import styles from "./generate.module.css";
 
@@ -121,20 +123,24 @@ export default function About() {
     );
   }
 
+  function readFromJsonData(input: InputFile) {
+    setLogo(input.logo);
+    setSupplementImage(input.supplementImage);
+    setCategories(input.categories.map((c) => ({ ...c, id: v4() })));
+    setEntries(input.entries.map((e) => ({ ...e, id: v4() })));
+    setHeader(input.header);
+    setIcons(input.icons.map((i) => ({ ...i, id: v4() })));
+    setRules(input.rules.map((r) => ({ rule: r, id: v4() })));
+    setDefaultMinimumPerCategory(input.defaultMinimumPerCategory);
+  }
+
   function handleFileChange(e: any) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
       const input = JSON.parse(reader.result as string) as InputFile;
-      setLogo(input.logo);
-      setSupplementImage(input.supplementImage);
-      setCategories(input.categories.map((c) => ({ ...c, id: v4() })));
-      setEntries(input.entries.map((e) => ({ ...e, id: v4() })));
-      setHeader(input.header);
-      setIcons(input.icons.map((i) => ({ ...i, id: v4() })));
-      setRules(input.rules.map((r) => ({ rule: r, id: v4() })));
-      setDefaultMinimumPerCategory(input.defaultMinimumPerCategory);
+      readFromJsonData(input);
     };
     reader.onerror = () => {
       console.log("file error", reader.error);
@@ -185,6 +191,7 @@ export default function About() {
   return (
     <div>
       <h1>Let&apos;s make a JSON file!</h1>
+      <Link href="/">Back to Event Bingo</Link>
       <div>
         Paste your input to the left and see the JSON content to the right. Copy
         the content and paste in your favorite text editor and save as a json
@@ -201,6 +208,9 @@ export default function About() {
               <strong>Warning!</strong> Current sheet will be replaced.
             </p>
             <input type="file" onChange={handleFileChange}></input>
+            <button onClick={() => readFromJsonData(grimcon)}>
+              Load GrimCon2014 sample
+            </button>
           </section>
           <section className={styles.section}>
             <label htmlFor="logoUrl">Logo url: </label>
