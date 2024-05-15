@@ -1,3 +1,8 @@
+.section {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
 .generate {
   border: 1px solid red;
   display: flex;
@@ -7,7 +12,8 @@
 
 .textArea {
   width: 600px;
-  height: 600px;
+  min-height: 600px;
+  height: 90vh;
 }
 
 .logoContainer {
@@ -33,4 +39,9 @@
 .supplementImage {
   max-height: 140px;
   aspect-ratio: 1;
+}
+
+.fileInput {
+  padding: 10px;
+  background-color: aquamarine;
 }

@@ -1,55 +1,190 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-import { Category, InputFile } from "@/types";
+import { Category, InputFile, Entry, Icon } from "@/types";
+import { v4 } from "uuid";
+import iconStyles from "@/app/page.module.css";
 import styles from "./generate.module.css";
+
+type CategoryWithId = Category & { id: string };
+type RuleWithId = { id: string; rule: string };
+type EntryWithId = Entry & { id: string };
+type IconWithId = Icon & { id: string };
 
 export default function About() {
   const [json, setJson] = useState<InputFile>();
   const [logo, setLogo] = useState("");
+  const [header, setHeader] = useState("");
   const [supplementImage, setSupplementImage] = useState("");
-  const [defaultMinimumPerCategory, setDefaultMinimumPerCategory] = useState(5);
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      name: "social",
-    },
-  ]);
+  const [icons, setIcons] = useState<IconWithId[]>([]);
+  const [entries, setEntries] = useState<EntryWithId[]>([]);
+  const [defaultMinimumPerCategory, setDefaultMinimumPerCategory] = useState(0);
+  const [rules, setRules] = useState<RuleWithId[]>([]);
+  const [categories, setCategories] = useState<CategoryWithId[]>([]);
 
-  function removeCategory(name: string) {
-    setCategories(categories.filter((c) => c.name !== name));
+  function removeEntry(id: string) {
+    setEntries(entries.filter((e) => e.id !== id));
   }
 
-  function updateCategory(name: string, newValue: string) {
+  function updateEntry(id: string, newValue: Entry) {
+    const updatedEntries = entries.map((e) => {
+      if (e.id === id) {
+        return {
+          ...newValue,
+          id,
+        };
+      }
+      return e;
+    });
+    setEntries(updatedEntries);
+  }
+
+  function removeRule(id: string) {
+    setRules(rules.filter((c) => c.id !== id));
+  }
+
+  function updateRule(id: string, newValue: string) {
+    const updatedRules = rules.map((r) => {
+      if (r.id === id) {
+        return { rule: newValue, id };
+      }
+      return r;
+    });
+    setRules(updatedRules);
+  }
+
+  function removeCategory(id: string) {
+    const oldCategoryName = categories.filter((c) => c.id === id)[0].name;
+    setCategories(categories.filter((c) => c.id !== id));
+
+    setEntries(
+      entries.map((e) => {
+        if (e.category === oldCategoryName) {
+          return { ...e, category: "" };
+        }
+        return e;
+      })
+    );
+  }
+
+  function updateIcon(newValues: IconWithId) {
+    const oldValue = icons.filter((i) => i.id === newValues.id)[0].name;
+    const updatedIcons = icons.map((i) => {
+      if (i.id === newValues.id) {
+        return {
+          ...newValues,
+        };
+      }
+      return i;
+    });
+    setIcons(updatedIcons);
+    setEntries(
+      entries.map((e) => {
+        if (e.icon === oldValue) {
+          return { ...e, icon: newValues.name };
+        }
+        return e;
+      })
+    );
+  }
+
+  function removeIcon(id: string) {
+    const oldIconName = icons.filter((i) => i.id === id)[0].name;
+    setIcons(icons.filter((i) => i.id !== id));
+    setEntries(
+      entries.map((e) => {
+        if (e.icon === oldIconName) {
+          const { icon, ...entry } = e;
+          return entry;
+        }
+        return e;
+      })
+    );
+  }
+
+  function updateCategory(id: string, newValue: string) {
+    const name = newValue.toLowerCase().trim();
+    const oldValue = categories.filter((c) => c.id === id)[0].name;
     const updatedCategories = categories.map((c) => {
-      if (c.name === name) {
-        return { name: newValue };
+      if (c.id === id) {
+        return { name, id };
       }
       return c;
     });
     setCategories(updatedCategories);
+    setEntries(
+      entries.map((e) => {
+        if (e.category === oldValue) {
+          return { ...e, category: name };
+        }
+        return e;
+      })
+    );
+  }
+
+  function handleFileChange(e: any) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      const input = JSON.parse(reader.result as string) as InputFile;
+      setLogo(input.logo);
+      setSupplementImage(input.supplementImage);
+      setCategories(input.categories.map((c) => ({ ...c, id: v4() })));
+      setEntries(input.entries.map((e) => ({ ...e, id: v4() })));
+      setHeader(input.header);
+      setIcons(input.icons.map((i) => ({ ...i, id: v4() })));
+      setRules(input.rules.map((r) => ({ rule: r, id: v4() })));
+      setDefaultMinimumPerCategory(input.defaultMinimumPerCategory);
+    };
+    reader.onerror = () => {
+      console.log("file error", reader.error);
+    };
   }
 
   useEffect(() => {
+    console.log("render");
     const jsonStructure: InputFile = {
       logo,
       defaultMinimumPerCategory,
       supplementImage,
-      icons: [
-        {
-          name: "idea",
-          image: "https://takras.github.io/event-bingo/images/veiviser.png",
-        },
-      ],
-      categories,
-      header: "Name",
-      rules: [],
-      entries: [],
+      icons: icons.map((i) => {
+        return {
+          image: i.image,
+          name: i.name,
+        };
+      }),
+      categories: categories
+        .filter((c) => c.name !== "")
+        .map((c) => {
+          return { name: c.name };
+        }),
+      header,
+      rules: rules.filter((r) => r.rule !== "").map((r) => r.rule),
+      entries: entries
+        .filter((e) => e.description !== "")
+        .map((e) => {
+          return {
+            category: e.category,
+            description: e.description,
+            icon: e.icon,
+          };
+        }),
     };
     setJson(jsonStructure);
-  }, [logo, defaultMinimumPerCategory, supplementImage, categories]);
+  }, [
+    logo,
+    defaultMinimumPerCategory,
+    supplementImage,
+    categories,
+    header,
+    rules,
+    entries,
+    icons,
+  ]);
 
   return (
     <div>
-      <h1>Let&apos;s Generate the JSON file!</h1>
+      <h1>Let&apos;s make a JSON file!</h1>
       <div>
         Paste your input to the left and see the JSON content to the right. Copy
         the content and paste in your favorite text editor and save as a json
@@ -57,29 +192,42 @@ export default function About() {
       </div>
       <div className={styles.generate}>
         <div className={styles.inputContainer}>
-          <section>
+          <section className={styles.fileInput}>
+            <p>
+              You can load a previously generated JSON file here, to continue
+              from that point.
+            </p>
+            <p>
+              <strong>Warning!</strong> Current sheet will be replaced.
+            </p>
+            <input type="file" onChange={handleFileChange}></input>
+          </section>
+          <section className={styles.section}>
             <label htmlFor="logoUrl">Logo url: </label>
             <input
               type="text"
               id="logoUrl"
-              placeholder="https://example.com/image.jpeg"
+              placeholder="https://example.com/logo.jpeg"
               size={50}
+              value={logo}
               onChange={(e) => setLogo(e.target.value)}
             ></input>
             <div className={styles.logoContainer}>
               <img src={logo} className={styles.logo} alt=""></img>
+              {!logo && <span>Preview area</span>}
             </div>
           </section>
 
-          <section>
-            <label htmlFor="logoUrl">
+          <section className={styles.section}>
+            <label htmlFor="supplementUrl">
               Supplemental squared image url (ie QR code):{" "}
             </label>
             <input
               type="text"
-              id="logoUrl"
+              id="supplementUrl"
               placeholder="https://example.com/qrcode.jpeg"
               size={50}
+              value={supplementImage}
               onChange={(e) => setSupplementImage(e.target.value)}
             ></input>
             <div className={styles.supplementContainer}>
@@ -88,10 +236,11 @@ export default function About() {
                 className={styles.supplementImage}
                 alt=""
               ></img>
+              {!supplementImage && <span>Preview area</span>}
             </div>
           </section>
 
-          <section>
+          <section className={styles.section}>
             <label htmlFor="minimumPick">Minimum picks per category: </label>
             <input
               id="minimumPick"
@@ -103,26 +252,120 @@ export default function About() {
             ></input>
           </section>
 
-          <section>
-            <label>Categories:</label>
+          <section className={styles.section}>
+            <label htmlFor="inputHeader">Header value</label>
+            <input
+              id="inputHeader"
+              type="text"
+              value={header}
+              onChange={(e) => setHeader(e.currentTarget.value)}
+            ></input>
+          </section>
+
+          <section className={styles.section}>
+            <label htmlFor="buttonAddCategory">Categories:</label>
+            <p>
+              There is no check for duplicates. Categories will not show to the
+              right until it has content.
+            </p>
+            <p>This will not appear on the sheet.</p>
             <button
+              id="buttonAddCategory"
               onClick={() =>
-                setCategories((current) => [...current, { name: "" }])
+                setCategories((current) => [...current, { name: "", id: v4() }])
               }
             >
               Add category
             </button>
             {categories.map((category) => {
               return (
-                <div className={styles.category} key={category.name}>
+                <div className={styles.category} key={category.id}>
                   <input
                     type="text"
                     value={category.name}
                     onChange={(e) =>
-                      updateCategory(category.name, e.currentTarget.value)
+                      updateCategory(category.id, e.currentTarget.value)
                     }
                   ></input>
-                  <button onClick={() => removeCategory(category.name)}>
+                  <button onClick={() => removeCategory(category.id)}>-</button>
+                </div>
+              );
+            })}
+          </section>
+
+          <section className={styles.section}>
+            <label htmlFor="buttonAddRule">Rules:</label>
+            <p>
+              Rules and regulations for the event. Keep it short. Keep it
+              simple.
+            </p>
+            <p>Empty rules will not show in the json until it has a value.</p>
+            <button
+              id="buttonAddRule"
+              onClick={() =>
+                setRules((current) => [...current, { rule: "", id: v4() }])
+              }
+            >
+              Add rule
+            </button>
+            {rules.map((rule) => {
+              return (
+                <div className={styles.rule} key={rule.id}>
+                  <input
+                    type="text"
+                    value={rule.rule}
+                    size={50}
+                    onChange={(e) => updateRule(rule.id, e.currentTarget.value)}
+                  ></input>
+                  <button onClick={() => removeRule(rule.id)}>-</button>
+                </div>
+              );
+            })}
+          </section>
+
+          <section className={styles.section}>
+            <label htmlFor="buttonAddIcon">Icons:</label>
+            <p>Invalid URLs will not show in the json file.</p>
+            <button
+              id="buttonAddIcon"
+              onClick={() =>
+                setIcons((current) => [
+                  ...current,
+                  { image: "", name: "", id: v4() },
+                ])
+              }
+            >
+              Add Icon
+            </button>
+            {icons.map((icon) => {
+              return (
+                <div className={styles.iconSection} key={icon.id}>
+                  <input
+                    type="text"
+                    value={icon.name}
+                    size={10}
+                    onChange={(e) =>
+                      updateIcon({ ...icon, name: e.currentTarget.value })
+                    }
+                  ></input>
+                  <input
+                    type="text"
+                    value={icon.image}
+                    size={50}
+                    onChange={(e) => {
+                      updateIcon({ ...icon, image: e.currentTarget.value });
+                    }}
+                  ></input>
+                  <img
+                    src={icon.image}
+                    className={iconStyles.icon}
+                    alt={icon.name}
+                  ></img>
+                  <button
+                    onClick={() => {
+                      removeIcon(icon.id);
+                    }}
+                  >
                     -
                   </button>
                 </div>
@@ -130,14 +373,77 @@ export default function About() {
             })}
           </section>
 
-          <a
-            href={`data:application/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(json, null, 4)
-            )}`}
-            download={"data.json"}
-          >
-            Donwload JSON file
-          </a>
+          <section className={styles.section}>
+            <label htmlFor="buttonAddEntry">Entries:</label>
+            <p>Empty entries will not show in the json until it has a value.</p>
+            <button
+              id="buttonAddEntry"
+              onClick={() =>
+                setEntries((current) => [
+                  ...current,
+                  {
+                    category: categories[0].name || "",
+                    description: "",
+                    id: v4(),
+                  },
+                ])
+              }
+            >
+              Add entry
+            </button>
+            {entries.map((entry) => {
+              return (
+                <div className={styles.entry} key={entry.id}>
+                  <input
+                    type="text"
+                    value={entry.description}
+                    size={30}
+                    onChange={(e) => {
+                      updateEntry(entry.id, {
+                        ...entry,
+                        description: e.currentTarget.value,
+                      });
+                    }}
+                  ></input>
+                  <select
+                    name="category"
+                    defaultValue={entry.category}
+                    onChange={(e) =>
+                      updateEntry(entry.id, {
+                        ...entry,
+                        category: e.currentTarget.value,
+                      })
+                    }
+                  >
+                    <option value="">-</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.name}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    name="icon"
+                    defaultValue={entry.icon}
+                    onChange={(e) =>
+                      updateEntry(entry.id, {
+                        ...entry,
+                        icon: e.currentTarget.value,
+                      })
+                    }
+                  >
+                    <option value="">-</option>
+                    {icons.map((icon) => (
+                      <option key={icon.id} value={icon.name}>
+                        {icon.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={() => removeEntry(entry.id)}>-</button>
+                </div>
+              );
+            })}
+          </section>
         </div>
 
         <div className={styles.jsonContainer}>
@@ -146,6 +452,14 @@ export default function About() {
             readOnly
             value={JSON.stringify(json, null, 4)}
           ></textarea>
+          <a
+            href={`data:application/json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify(json, null, 4)
+            )}`}
+            download={"data.json"}
+          >
+            Donwload JSON file
+          </a>
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ export interface Category {
   name: string;
 }
 
-interface Entry {
+export interface Entry {
   description: string;
   category: string;
   icon?: string;
