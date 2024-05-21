@@ -441,7 +441,7 @@ export default function About() {
                   <input
                     type="text"
                     value={entry.description}
-                    size={30}
+                    size={50}
                     onChange={(e) => {
                       updateEntry(entry.id, {
                         ...entry,

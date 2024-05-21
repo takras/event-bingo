@@ -1,0 +1,22 @@
+.comic {
+  font-family:cursive;
+}
+
+.bold {
+  font-family: fantasy;
+  font-weight: 700;
+  font-size: larger;
+
+}
+
+.regular {
+  font-size: medium;
+}
+
+.big {
+  font-size: x-large;
+}
+
+.small {
+  font-style: oblique;
+}

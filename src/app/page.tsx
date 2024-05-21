@@ -6,7 +6,7 @@ import { ToolsMenu } from "./tools-menu";
 import { Cell } from "./cell";
 import { BoardContext, getIcon } from "@/utils";
 import { Guide } from "./guide";
-import grimcon from "@/data/grimcon2024.json";
+import spel from "@/data/SPEL-13-event-bingo-v1.json";
 import classnames from "classnames";
 import styles from "./page.module.css";
 
@@ -55,7 +55,12 @@ const Board = ({ entries, input, entriesOrder, tasksAreShown }: Board) => {
       )}
 
       <div className={styles.name}>{input.header}</div>
-      <div className={styles.gridContainer}>
+      <div
+        className={classnames(
+          styles.gridContainer,
+          !boardContext?.isBigBoard ? styles.small : null
+        )}
+      >
         <div className={styles.github}>
           <div className={styles.url}>takras.github.io/event-bingo</div>
         </div>
@@ -138,13 +143,13 @@ const getRandomEntriesFromList = ({
 };
 
 export default function Home() {
-  const [input, setInput] = useState<InputFile>(grimcon as InputFile);
+  const [input, setInput] = useState<InputFile>(spel as InputFile);
   const [filteredEntries, setFilteredEntries] = useState<number[]>([]);
   const [entries, setEntries] = useState<EntryWithId[]>();
   const [showTasks, setShowTasks] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
-  const [boardSize, setBoardSize] = useState(input.isBigBoard);
+  const [isBigBoard, setIsBigBoard] = useState(input.isBigBoard);
   const [numberOfPages, setNumberOfPages] = useState(1);
 
   const COLUMNS_BIG = useMemo(() => [0, 1, 2, 3, 4], []);
@@ -169,14 +174,13 @@ export default function Home() {
       setInput,
       setShowGuide,
       setShowTasks,
-      boardSwitchName: boardSize === input.isBigBoard,
-      setToggleBoardSize: setBoardSize,
-      isBigBoard: boardSize,
+      setToggleBoardSize: setIsBigBoard,
+      isBigBoard: isBigBoard,
     };
-  }, [columns, rows, center, numberOfPages, boardSize, input.isBigBoard]);
+  }, [columns, rows, center, numberOfPages, isBigBoard]);
 
   useEffect(() => {
-    if (boardSize !== input.isBigBoard) {
+    if (!isBigBoard) {
       setColumns(COLUMNS_SMALL);
       setRows(ROWS_SMALL);
       setCenter(CENTER_SMALL);
@@ -186,17 +190,17 @@ export default function Home() {
     setRows(ROWS_BIG);
     setCenter(CENTER_BIG);
   }, [
-    boardSize,
+    isBigBoard,
     COLUMNS_BIG,
     COLUMNS_SMALL,
     CENTER_SMALL,
     ROWS_BIG,
     ROWS_SMALL,
-    input.isBigBoard,
   ]);
 
   useEffect(() => {
     setEntries(input.entries.map((entry, id) => ({ ...entry, id })));
+    setIsBigBoard(input.isBigBoard);
   }, [input]);
 
   useEffect(() => {
