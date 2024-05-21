@@ -14,8 +14,9 @@
   height: 100%;
   flex-direction: column;
   row-gap: 10px;
-  background-color: aquamarine;
-
+  background-color: rgb(159, 159, 159);
+  z-index: 1;
+  border-right: 2px solid black;
 }
 
 .hide {

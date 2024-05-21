@@ -7,6 +7,9 @@ export interface InputFile {
   categories: Category[];
   rules: string[];
   entries: Entry[];
+  name?: string;
+  version?: number;
+  isBigBoard: boolean;
 }
 
 export interface Icon {

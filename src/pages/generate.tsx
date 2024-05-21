@@ -14,6 +14,9 @@ type IconWithId = Icon & { id: string };
 
 export default function About() {
   const [json, setJson] = useState<InputFile>();
+  const [name, setName] = useState<string | undefined>("");
+  const [version, setVersion] = useState(1);
+  const [isBigBoard, setIsBigBoard] = useState(true);
   const [logo, setLogo] = useState("");
   const [header, setHeader] = useState("");
   const [supplementImage, setSupplementImage] = useState("");
@@ -132,6 +135,9 @@ export default function About() {
     setIcons(input.icons.map((i) => ({ ...i, id: v4() })));
     setRules(input.rules.map((r) => ({ rule: r, id: v4() })));
     setDefaultMinimumPerCategory(input.defaultMinimumPerCategory);
+    setVersion(input.version ?? 1);
+    setName(input.name ?? "");
+    setIsBigBoard(input.isBigBoard || true);
   }
 
   function handleFileChange(e: any) {
@@ -150,7 +156,10 @@ export default function About() {
   useEffect(() => {
     console.log("render");
     const jsonStructure: InputFile = {
+      version: version ?? 1,
       logo,
+      name: name ?? "",
+      isBigBoard,
       defaultMinimumPerCategory,
       supplementImage,
       icons: icons.map((i) => {
@@ -178,6 +187,9 @@ export default function About() {
     };
     setJson(jsonStructure);
   }, [
+    isBigBoard,
+    version,
+    name,
     logo,
     defaultMinimumPerCategory,
     supplementImage,
@@ -212,6 +224,28 @@ export default function About() {
               Load GrimCon2014 sample
             </button>
           </section>
+
+          <section className={styles.secion}>
+            <label htmlFor="boardName">Name of the event: </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.currentTarget.value)}
+              id="boardName"
+            ></input>
+          </section>
+
+          <section className={styles.secion}>
+            <label htmlFor="boardSize">Size of the board: </label>
+            <select
+              id="boardSize"
+              onChange={(e) => setIsBigBoard(e.currentTarget.value === "BIG")}
+            >
+              <option value="BIG">Big board</option>
+              <option value="SMALL">Small board</option>
+            </select>
+          </section>
+
           <section className={styles.section}>
             <label htmlFor="logoUrl">Logo url: </label>
             <input
@@ -466,7 +500,8 @@ export default function About() {
             href={`data:application/json;charset=utf-8,${encodeURIComponent(
               JSON.stringify(json, null, 4)
             )}`}
-            download={"data.json"}
+            onClick={() => setVersion((current) => current + 1)}
+            download={`${name}-event-bingo-v${version - 1}.json`}
           >
             Donwload JSON file
           </a>

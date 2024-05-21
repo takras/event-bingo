@@ -1,27 +1,16 @@
-import { InputFile } from "@/types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import styles from "./tools-menu.module.css";
 import classNames from "classnames";
+import { BoardContext } from "@/utils";
 
 type AdminTools = {
   randomizeBoard: () => void;
-  numberOfPages: number;
-  setNumberOfPages: Dispatch<SetStateAction<number>>;
-  setShowTasks: Dispatch<SetStateAction<boolean>>;
-  setInput: Dispatch<SetStateAction<InputFile>>;
-  setShowGuide: Dispatch<SetStateAction<boolean>>;
 };
 
-export const ToolsMenu = ({
-  randomizeBoard,
-  setShowTasks,
-  setInput,
-  numberOfPages,
-  setNumberOfPages,
-  setShowGuide,
-}: AdminTools) => {
+export const ToolsMenu = ({ randomizeBoard }: AdminTools) => {
   const [showPanel, setShowPanel] = useState(false);
+  const boardContext = useContext(BoardContext);
 
   function handleFileChange(e: any) {
     const file = e.target.files[0];
@@ -29,7 +18,7 @@ export const ToolsMenu = ({
     reader.readAsText(file);
     reader.onload = () => {
       const json = JSON.parse(reader.result as string);
-      setInput(json);
+      boardContext?.setInput(json);
     };
     reader.onerror = () => {
       console.log("file error", reader.error);
@@ -54,10 +43,22 @@ export const ToolsMenu = ({
       <button type="button" onClick={randomizeBoard}>
         Randomize
       </button>
-      <button type="button" onClick={() => setShowTasks((current) => !current)}>
+      <button
+        type="button"
+        onClick={() => boardContext?.setToggleBoardSize((current) => !current)}
+      >
+        Switch to {boardContext?.isBigBoard ? "small" : "large"} table
+      </button>
+      <button
+        type="button"
+        onClick={() => boardContext?.setShowTasks((current) => !current)}
+      >
         Show/hide tasks
       </button>
-      <button type="button" onClick={() => setShowGuide((current) => !current)}>
+      <button
+        type="button"
+        onClick={() => boardContext?.setShowGuide((current) => !current)}
+      >
         Show/hide guide
       </button>
       <Link href="/generate">Make a JSON file</Link>
@@ -72,14 +73,18 @@ export const ToolsMenu = ({
       <div className={styles.pagesCounter}>
         <button
           type="button"
-          onClick={() => setNumberOfPages((current) => current + 1)}
+          onClick={() =>
+            boardContext?.setNumberOfPages((current) => current + 1)
+          }
         >
           +
         </button>
-        <span className={styles.span}>{numberOfPages}</span>
+        <span className={styles.span}>{boardContext?.numberOfPages}</span>
         <button
           type="button"
-          onClick={() => setNumberOfPages((current) => current - 1)}
+          onClick={() =>
+            boardContext?.setNumberOfPages((current) => current - 1)
+          }
         >
           -
         </button>
