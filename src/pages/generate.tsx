@@ -135,7 +135,7 @@ export default function About() {
     setIcons(input.icons.map((i) => ({ ...i, id: v4() })));
     setRules(input.rules.map((r) => ({ rule: r, id: v4() })));
     setDefaultMinimumPerCategory(input.defaultMinimumPerCategory);
-    setVersion(input.version ?? 1);
+    setVersion(input.version ? input.version + 1 : 1);
     setName(input.name ?? "");
     setIsBigBoard(input.isBigBoard || true);
   }

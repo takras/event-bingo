@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { EntryWithId, Icon } from "@/types";
-import { getIcon } from "@/utils";
+import { BoardContext, getIcon } from "@/utils";
 import styles from "./cell.module.css";
 import pageStyles from "./page.module.css";
 import classNames from "classnames";
@@ -13,6 +14,7 @@ type Cell = {
 export const Cell = ({ index, boardState, entries, icons }: Cell) => {
   const id = boardState[index];
   const entry = entries?.find((e, i) => i === id);
+  const boardContext = useContext(BoardContext);
 
   const variant = [
     styles.comic,
@@ -25,11 +27,13 @@ export const Cell = ({ index, boardState, entries, icons }: Cell) => {
   if (!entry) {
     return null;
   }
+
+  const styleVariant = variant[Math.floor(Math.random() * variant.length)];
   return (
     <div
       className={classNames(
         pageStyles.cell,
-        variant[Math.floor(Math.random() * variant.length)]
+        boardContext?.isBigBoard ? null : styleVariant
       )}
     >
       {entry.description}

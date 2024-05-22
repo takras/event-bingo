@@ -5,24 +5,7 @@
     "isBigBoard": false,
     "defaultMinimumPerCategory": 5,
     "supplementImage": "https://i.imgur.com/3mzNJhm.png",
-    "icons": [
-        {
-            "image": "https://takras.github.io/event-bingo/images/ideskaper.png",
-            "name": "idea"
-        },
-        {
-            "image": "https://takras.github.io/event-bingo/images/ildsjel.png",
-            "name": "fire"
-        },
-        {
-            "image": "https://takras.github.io/event-bingo/images/kremmer.png",
-            "name": "merchant"
-        },
-        {
-            "image": "https://takras.github.io/event-bingo/images/veiviser.png",
-            "name": "guide"
-        }
-    ],
+    "icons": [],
     "categories": [
         {
             "name": "game"
@@ -37,86 +20,34 @@
             "name": "merch"
         }
     ],
-    "header": "Navn",
+    "header": "Navn:",
     "rules": [
-        "Den første som fullfører en rad (av 4) roper ut BINGO!",
-        "Den første som fullfører hele brettet roper ut BINGO!",
+        "For å få godkjent rekke (4 rad/rekke) må man høylytt rope ut «BINGO!»",
+        "Samme spill kan ikke brukes på flere ruter samtidig! Og Stein-Saks-Papir teller ikke som et spill.",
         "Det trekkes en tilfeldig vinner. Lever bingo-arket innen søndag kl 12.",
         "1 fullført rad = 1 lodd. Fullt brett = 3 lodd.",
         "Ikke glad i klem? High-five eller fist-bump er også lov."
     ],
     "entries": [
         {
-            "category": "game",
-            "description": "Vinn i et spill med minst 4 spillere."
+            "category": "task",
+            "description": "Trill en terning så dårlig at den faller i gulvet, og få noen andre til å plukke den opp for deg. "
         },
         {
             "category": "task",
-            "description": "Trill en terning så dårlig at den faller i gulvet, og få noen andre til å plukke den opp for deg."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill som starter med samme forbokstav som deg."
-        },
-        {
-            "category": "social",
-            "description": "Ta en selfie med Stian eller Steinar."
-        },
-        {
-            "category": "game",
-            "description": "Spill med minst 10 forskjellige mennesker i løpet av SPEL."
-        },
-        {
-            "category": "game",
-            "description": "Spill 5 nye (for deg) spill."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill fra 2024."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill som kom ut før år 2010."
-        },
-        {
-            "category": "social",
-            "description": "Spill et spill med noen som er på SPEL for første gang."
-        },
-        {
-            "category": "social",
-            "description": "Spill et spill med bare ukjente mennesker."
+            "description": "Spill et spill under bordet. "
         },
         {
             "category": "task",
-            "description": "Spill et spill under bordet."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill kun for 2 spillere."
+            "description": "Spill et spill stående. "
         },
         {
             "category": "task",
-            "description": "Stå på en stol og annonser til alle (minst 15) at SPEL er kjekt."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill med dyr som tema."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill med verdensrom-tema."
-        },
-        {
-            "category": "game",
-            "description": "Spill et spill til frokost."
-        },
-        {
-            "category": "social",
-            "description": "Ta et artig bilde og post på klubben sin Facebook-gruppe."
+            "description": "Stå på en stol og annonser HØYT Terje ruler! "
         },
         {
             "category": "task",
-            "description": "Ta en seiersdans etter å ha vunnet i et spill."
+            "description": "Ta en seiersdans etter å ha vunnet i et spill. "
         },
         {
             "category": "task",
@@ -124,59 +55,63 @@
         },
         {
             "category": "task",
-            "description": "Rydd et bord for kopper og søppel."
+            "description": "Rydd et bord for kopper og søppel. "
         },
         {
             "category": "task",
-            "description": "Finn opp en regel og få noen til å sjekke reglene."
+            "description": "Finn opp en regel og få noen til å sjekke reglene. "
         },
         {
             "category": "task",
-            "description": "Spill et spill stående."
+            "description": "Hjelp Terje med noe organisatorisk "
         },
         {
             "category": "social",
-            "description": "Stable spillbrikkene dine og del bildet i klubb-gruppa på Facebook."
+            "description": "Si noe fint til en frivillig eller en ansatt på kulturhuset."
         },
         {
             "category": "game",
-            "description": "Spill et spill som ikke har terninger."
+            "description": "Delta på en turnering."
         },
         {
-            "category": "merch",
-            "description": "Sjekk ut premiebordet."
+            "category": "social",
+            "description": "Gi en high five med innlevelse."
+        },
+        {
+            "category": "social",
+            "description": "Gi en klem til Marthe."
+        },
+        {
+            "category": "social",
+            "description": "Gi en klem til Terje."
         },
         {
             "category": "game",
-            "description": "Spill en prototype."
-        },
-        {
-            "category": "social",
-            "description": "Kommenter et av de andres bilder på klubben sin Facebook-gruppe."
-        },
-        {
-            "category": "social",
-            "description": "Ta en selfie med Marthe og del på klubben sin Facebook-gruppe",
-            "icon": ""
-        },
-        {
-            "category": "social",
-            "description": "Del på klubben sin Facebook-gruppe en selfie sammen med en ",
-            "icon": "guide"
-        },
-        {
-            "category": "social",
-            "description": "Ta en high-five med en ",
-            "icon": "merchant"
+            "description": "Spill et spill designet av en nordmann."
         },
         {
             "category": "game",
-            "description": "Spill et spill illustrert av Klemens Franz",
-            "icon": ""
+            "description": "Spill et spill eid av klubben."
+        },
+        {
+            "category": "social",
+            "description": "Stå på en stol og rop «SPEL RULER»"
+        },
+        {
+            "category": "task",
+            "description": "Spis en is eller frukt i solen."
+        },
+        {
+            "category": "task",
+            "description": "Besøk biblioteket."
         },
         {
             "category": "game",
-            "description": "Foreslå å spille et spill med en eller flere fremmede."
+            "description": "Spill et spill med flere enn 4 spillere."
+        },
+        {
+            "category": "game",
+            "description": "Spill et partyspill."
         },
         {
             "category": "game",
@@ -184,7 +119,99 @@
         },
         {
             "category": "game",
+            "description": "Lek en lek!"
+        },
+        {
+            "category": "task",
+            "description": "Gå en tur i nærområdet."
+        },
+        {
+            "category": "task",
+            "description": "Besøk Sola Sentrum."
+        },
+        {
+            "category": "social",
+            "description": "Stå på en stol og rop «TUSEN TAKK TERJE» "
+        },
+        {
+            "category": "task",
+            "description": "Dans (med innlevelse!!!) fra et bord til et annet.  "
+        },
+        {
+            "category": "social",
+            "description": "Ha en samtale som handler om noe annet enn spill med en ny venn."
+        },
+        {
+            "category": "task",
+            "description": "Delta i en (annen) konkurranse arrangert av SPEL."
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill med bare folk som starter på bokstaven «T» (utenom deg selv)"
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill med bare mørkhårede folk (utenom deg selv) "
+        },
+        {
+            "category": "social",
+            "description": "Ta en selfie med Terje."
+        },
+        {
+            "category": "social",
+            "description": "Spill et spill med noen som er på SPEL for første gang. "
+        },
+        {
+            "category": "social",
+            "description": "Spill et spill med bare nye venner (folk du ikke kjente før i dag)"
+        },
+        {
+            "category": "social",
+            "description": "Ta et artig bilde og post på Sola Brettspillklubb sin Facebook-gruppe eller Discord. "
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill med minst 4 spillere."
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill som starter med samme forbokstav som deg. "
+        },
+        {
+            "category": "game",
+            "description": "Spill med minst 10 forskjellige mennesker i løpet av SPEL. "
+        },
+        {
+            "category": "game",
+            "description": "Spill 2 nye (for deg) spill. "
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill fra 2024."
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill som er eldre enn 10 år (kom ut før år 2014) ."
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill kun for 2 spillere. "
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill med dyr som tema. "
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill med verdensrom-tema."
+        },
+        {
+            "category": "game",
             "description": "Spill et spill med terninger."
+        },
+        {
+            "category": "game",
+            "description": "Spill et spill som ikke har terninger."
         }
     ]
 }
