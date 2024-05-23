@@ -6,7 +6,7 @@ import { ToolsMenu } from "./tools-menu";
 import { Cell } from "./cell";
 import { BoardContext, getIcon } from "@/utils";
 import { Guide } from "./guide";
-import spel from "@/data/SPEL-13-event-bingo-v1.json";
+import spel from "@/data/SPEL 13-event-bingo-v3.json";
 import classnames from "classnames";
 import styles from "./page.module.css";
 

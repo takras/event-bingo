@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Category, InputFile, Entry, Icon } from "@/types";
 import { v4 } from "uuid";
-import grimcon from "@/data/grimcon2024.json";
+import spel from "@/data/SPEL 13-event-bingo-v3.json";
 import Link from "next/link";
 import iconStyles from "@/app/page.module.css";
 import styles from "./generate.module.css";
@@ -220,7 +220,7 @@ export default function About() {
               <strong>Warning!</strong> Current sheet will be replaced.
             </p>
             <input type="file" onChange={handleFileChange}></input>
-            <button onClick={() => readFromJsonData(grimcon)}>
+            <button onClick={() => readFromJsonData(spel)}>
               Load GrimCon2014 sample
             </button>
           </section>
